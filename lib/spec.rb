@@ -100,9 +100,11 @@ class Spec
   end
 
   def path(url, summary = nil, **named, &block)
-    path = PathItem.new summary, **named
+    root = PathItemRoot.new @paths
+    parent = root.child url
+    path = PathItem.new parent, summary, **named
     path.instance_eval(&block) if block
-    @paths.push [url, path]
+    parent.add path
   end
 
   def components(&block)
@@ -118,5 +120,45 @@ class Spec
     object_props props
     hash_props props
     props
+  end
+end
+
+class PathItemRoot
+  attr_reader :paths
+
+  def initialize(paths)
+    @paths = paths
+  end
+
+  def child(url)
+    PathItemParent.new url, self, []
+  end
+
+  def parameters
+    []
+  end
+end
+
+class PathItemParent
+  def initialize(url, parent, parameters)
+    @url = url
+    @parent = parent
+    @parameters = parameters
+  end
+
+  def child(url, parameters)
+    PathItemParent.new @url + url, self, parameters
+  end
+
+  def add(path_item)
+    @parent.paths.push [@url, path_item]
+  end
+
+  def paths
+    @parent.paths
+  end
+
+  def parameters
+    @parent.parameters + @parameters
   end
 end

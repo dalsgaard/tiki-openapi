@@ -6,13 +6,20 @@ openapi '3.0.1' do
   end
   path '/onboarding-data/{id}' do
     put 'putOnboardingData' do
-      parameter 'id', in: :path, required: true, schema: :string
       body do
         required
         content 'application/json', '#/components/schemas/OnboardingData'
       end
       response 204
       responses 400, 404
+    end
+    parameter 'id', in: :path, required: true, schema: :string
+    path '/{foo}' do
+      parameter 'foo'
+      path '/{bar}' do
+        parameter 'bar'
+        parameter 'q', in: :query
+      end
     end
   end
   path '/AccountSet' do

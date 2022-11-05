@@ -1,0 +1,836 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"CompanyStatus": {
+				"type": "string",
+				"enum": [
+					"active",
+					"dissolved",
+					"liquidation",
+					"receivership",
+					"converted-closed",
+					"voluntary-arrangement",
+					"insolvency-proceedings",
+					"administration",
+					"open",
+					"closed"
+				],
+				"description": "The status of the company"
+			},
+			"CompanyType": {
+				"type": "string",
+				"enum": [
+					"private-unlimited",
+					"ltd",
+					"plc",
+					"old-public-company",
+					"private-limited-guarant-nsc-limited-exemption",
+					"limited-partnership",
+					"private-limited-guarant-nsc",
+					"converted-or-closed",
+					"private-unlimited-nsc",
+					"private-limited-shares-section-30-exemption",
+					"protected-cell-company",
+					"assurance-company",
+					"oversea-company",
+					"eeig",
+					"icvc-securities",
+					"icvc-warrant",
+					"icvc-umbrella",
+					"registered-society-non-jurisdictional",
+					"industrial-and-provident-society",
+					"northern-ireland",
+					"northern-ireland-other",
+					"royal-charter",
+					"investment-company-with-variable-capital",
+					"unregistered-company",
+					"llp",
+					"other",
+					"european-public-limited-liability-company-se",
+					"uk-establishment",
+					"scottish-partnership",
+					"charitable-incorporated-organization",
+					"scottish-charitable-incorporated-organization",
+					"further-education-or-sixth-form-college-corporation"
+				],
+				"description": "The type of the company"
+			},
+			"CompanyAddress": {
+				"properties": {
+					"postalCode": {
+						"type": "string",
+						"description": "The postal code"
+					},
+					"region": {
+						"type": "string",
+						"description": "The region of address"
+					},
+					"addressLine2": {
+						"type": "string",
+						"description": "The second line of the address"
+					},
+					"addressLine1": {
+						"type": "string",
+						"description": "The first line of the address"
+					},
+					"country": {
+						"type": "string",
+						"description": "The Country in UK of the address, possible values Wales, England and United Kingdom`s other countries, We did not specify string litteral because old companis can have any value"
+					},
+					"locality": {
+						"type": "string",
+						"description": "The locality of address e.g London"
+					}
+				},
+				"required": [
+					"postalCode",
+					"addressLine1",
+					"locality"
+				],
+				"type": "object",
+				"description": "The address of the company"
+			},
+			"CompanyMember": {
+				"properties": {
+					"address": {
+						"$ref": "#/components/schemas/CompanyAddress",
+						"description": "The service address of the person with significant control"
+					},
+					"companyName": {
+						"type": "string",
+						"description": "The name of the officer in case if the entity is the company"
+					},
+					"lastName": {
+						"type": "string",
+						"description": "The officer's last name in case if the officer is the person"
+					},
+					"firstName": {
+						"type": "string",
+						"description": "The officer's first name in case if the officer is the person"
+					},
+					"title": {
+						"type": "string",
+						"description": "The officer's title"
+					}
+				},
+				"required": [
+					"address"
+				],
+				"type": "object",
+				"description": "Base type for company directors and PSCs"
+			},
+			"CompanyOfficerStatus": {
+				"type": "string",
+				"enum": [
+					"active"
+				],
+				"nullable": true,
+				"description": "Indicates whether currently, an officer has an active role in the company"
+			},
+			"CompanyOfficerRole": {
+				"type": "string",
+				"enum": [
+					"cic-manager",
+					"corporate-director",
+					"corporate-llp-designated-member",
+					"corporate-llp-member",
+					"corporate-manager-of-an-eeig",
+					"corporate-member-of-a-management-organ",
+					"corporate-member-of-a-supervisory-organ",
+					"corporate-member-of-an-administrative-organ",
+					"corporate-nominee-director",
+					"corporate-nominee-secretary",
+					"corporate-secretary",
+					"director",
+					"general-partner-in-a-limited-partnership",
+					"judicial-factor",
+					"limited-partner-in-a-limited-partnership",
+					"llp-designated-member",
+					"llp-member",
+					"manager-of-an-eeig",
+					"member-of-a-management-organ",
+					"member-of-a-supervisory-organ",
+					"member-of-an-administrative-organ",
+					"nominee-director",
+					"nominee-secretary",
+					"person-authorised-to-accept",
+					"person-authorised-to-represent",
+					"person-authorised-to-represent-and-accept",
+					"receiver-and-manager",
+					"secretary"
+				],
+				"nullable": true,
+				"description": "Company`s officer's role names"
+			},
+			"CompanyOfficerResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/CompanyMember"
+					},
+					{
+						"properties": {
+							"officerRole": {
+								"$ref": "#/components/schemas/CompanyOfficerRole",
+								"description": "The officer's role name"
+							},
+							"appointedOn": {
+								"type": "string",
+								"description": "The date on which the officer resigned"
+							},
+							"status": {
+								"$ref": "#/components/schemas/CompanyOfficerStatus",
+								"description": "Indicates whether currently an officer has an active role in the company"
+							}
+						},
+						"required": [
+							"officerRole",
+							"appointedOn"
+						],
+						"type": "object"
+					}
+				],
+				"description": "Response object of company`s officer"
+			},
+			"CompanyPSCKind": {
+				"type": "string",
+				"enum": [
+					"individual-person-with-significant-control",
+					"corporate-entity-person-with-significant-control",
+					"legal-person-with-significant-control",
+					"super-secure-person-with-significant-control"
+				],
+				"description": "The type of person with significant control in company"
+			},
+			"CompanyPSCResponse": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/CompanyMember"
+					},
+					{
+						"properties": {
+							"kind": {
+								"$ref": "#/components/schemas/CompanyPSCKind",
+								"description": "The type of person with significant control in company"
+							},
+							"naturesOfControl": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array",
+								"description": "Indicates the nature of control the person with significant control holds. Can find details here https://github.com/companieshouse/api-enumerations/blob/master/psc_descriptions.yml"
+							}
+						},
+						"required": [
+							"kind",
+							"naturesOfControl"
+						],
+						"type": "object"
+					}
+				],
+				"description": "Response object of person(entity) with significant control in the company"
+			},
+			"CompanyInfoResponse": {
+				"properties": {
+					"pscs": {
+						"items": {
+							"$ref": "#/components/schemas/CompanyPSCResponse"
+						},
+						"type": "array",
+						"nullable": true,
+						"description": "The list of company`s shareholders with significant control"
+					},
+					"directors": {
+						"items": {
+							"$ref": "#/components/schemas/CompanyOfficerResponse"
+						},
+						"type": "array",
+						"nullable": true,
+						"description": "The list of company`s current and ex officers"
+					},
+					"dateOfCreation": {
+						"type": "string",
+						"description": "The date when the company was created"
+					},
+					"registeredOfficeAddress": {
+						"$ref": "#/components/schemas/CompanyAddress",
+						"description": "The address of the company's registered office."
+					},
+					"type": {
+						"$ref": "#/components/schemas/CompanyType",
+						"description": "The type of the company"
+					},
+					"status": {
+						"$ref": "#/components/schemas/CompanyStatus",
+						"description": "The status of the company"
+					},
+					"companyName": {
+						"type": "string",
+						"description": "The name of the company"
+					},
+					"companyNumber": {
+						"type": "string",
+						"description": "The number of the company"
+					}
+				},
+				"required": [
+					"dateOfCreation",
+					"type",
+					"companyName",
+					"companyNumber"
+				],
+				"type": "object",
+				"description": "Response object of the company`s profile"
+			},
+			"CompanyData": {
+				"properties": {
+					"isUserAuthorized": {
+						"type": "boolean"
+					},
+					"isInformationCorrect": {
+						"type": "boolean"
+					},
+					"companyDirectors": {
+						"items": {
+							"$ref": "#/components/schemas/CompanyOfficerResponse"
+						},
+						"type": "array"
+					},
+					"companyPSCs": {
+						"items": {
+							"$ref": "#/components/schemas/CompanyPSCResponse"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object"
+			},
+			"Country": {
+				"type": "string",
+				"description": "Country name"
+			},
+			"CountryIso2Code": {
+				"type": "string",
+				"description": "Country name in ISO 3166-1 alpha-2 format",
+				"pattern": "[A-Z]{2}"
+			},
+			"CountryIso3Code": {
+				"type": "string",
+				"description": "Country name in ISO 3166-1 alpha-3 format",
+				"pattern": "[A-Z]{3}"
+			},
+			"Address": {
+				"properties": {
+					"postCode": {
+						"type": "string",
+						"description": "The postal code"
+					},
+					"countryIso3": {
+						"$ref": "#/components/schemas/CountryIso3Code",
+						"description": "The country`s code in ISO 3166-1 alpha-3 format"
+					},
+					"countryIso2": {
+						"$ref": "#/components/schemas/CountryIso2Code",
+						"description": "The country`s code in ISO 3166-1 alpha-2 format"
+					},
+					"country": {
+						"$ref": "#/components/schemas/Country",
+						"description": "The country of the address"
+					},
+					"region": {
+						"type": "string",
+						"description": "The Region of the address"
+					},
+					"locality": {
+						"type": "string",
+						"description": "The locality of address e.g London"
+					},
+					"line2": {
+						"type": "string",
+						"description": "The second line of the address"
+					},
+					"line1": {
+						"type": "string",
+						"description": "The first line of the address"
+					}
+				},
+				"type": "object",
+				"description": "Common address model"
+			},
+			"JumioGender": {
+				"type": "string",
+				"enum": [
+					"M",
+					"F"
+				],
+				"description": "Possible types of Gender"
+			},
+			"IdDocumentType": {
+				"type": "string",
+				"enum": [
+					"PASSPORT",
+					"DRIVING_LICENSE",
+					"ID_CARD",
+					"VISA"
+				],
+				"description": "Possible types of id document"
+			},
+			"IdDocumentSubType": {
+				"type": "string",
+				"enum": [
+					"NATIONAL_ID",
+					"CONSULAR_ID",
+					"ELECTORAL_ID",
+					"RESIDENT_PERMIT_ID",
+					"TAX_ID",
+					"STUDENT_ID",
+					"PASSPORT_CARD_ID",
+					"MILITARY_ID",
+					"PUBLIC_SAFETY_ID",
+					"HEALTH_ID",
+					"OTHER_ID",
+					"VISA",
+					"REGULAR_DRIVING_LICENSE",
+					"LEARNING_DRIVING_LICENSE ",
+					"E_PASSPORT",
+					"UNKNOWN"
+				],
+				"description": "Possible subtypes of id document"
+			},
+			"IdDocument": {
+				"properties": {
+					"personalNumber": {
+						"type": "string",
+						"description": "Personal number of the document"
+					},
+					"expiryDate": {
+						"type": "string",
+						"description": "Date of expiry in the format YYYY-MM-DD as available on the ID"
+					},
+					"idScanImage": {
+						"type": "string",
+						"description": "URL of image of the transaction"
+					},
+					"issuingDate": {
+						"type": "string",
+						"description": "Issuing date of the document"
+					},
+					"number": {
+						"type": "string",
+						"description": "Identification number of the document as available on the ID"
+					},
+					"country": {
+						"$ref": "#/components/schemas/CountryIso2Code",
+						"description": "Country of issuing id"
+					},
+					"subType": {
+						"$ref": "#/components/schemas/IdDocumentSubType",
+						"description": "subtype of id document"
+					},
+					"type": {
+						"$ref": "#/components/schemas/IdDocumentType",
+						"description": "type of id document"
+					}
+				},
+				"type": "object",
+				"description": "Provided identity document"
+			},
+			"IdentityVerificationSimilarity": {
+				"type": "string",
+				"enum": [
+					"MATCH",
+					"NO_MATCH",
+					"NOT_POSSIBLE"
+				],
+				"description": "Shows similarity of provided id document and photo"
+			},
+			"IdentityVerificationFailureReason": {
+				"type": "string",
+				"enum": [
+					"SELFIE_CROPPED_FROM_ID",
+					"ENTIRE_ID_USED_AS_SELFIE",
+					"MULTIPLE_PEOPLE",
+					"SELFIE_IS_SCREEN_PAPER_VIDEO",
+					"SELFIE_MANIPULATED",
+					"AGE_DIFFERENCE_TOO_BIG",
+					"NO_FACE_PRESENT",
+					"FACE_NOT_FULLY_VISIBLE",
+					"BAD_QUALITY",
+					"BLACK_AND_WHITE",
+					"LIVENESS_FAILED"
+				],
+				"description": "Shows identity verification failure reason"
+			},
+			"IdentityVerification": {
+				"properties": {
+					"reason": {
+						"$ref": "#/components/schemas/IdentityVerificationFailureReason",
+						"description": "If validity = FALSE this value show the reason for it"
+					},
+					"validity": {
+						"type": "boolean",
+						"description": "Shows validity of identity document"
+					},
+					"similarity": {
+						"$ref": "#/components/schemas/IdentityVerificationSimilarity",
+						"description": "Shows if provided id document and photo are similar"
+					}
+				},
+				"required": [
+					"validity",
+					"similarity"
+				],
+				"type": "object",
+				"description": "Identity verification details"
+			},
+			"IdVerificationStatus": {
+				"type": "string",
+				"enum": [
+					"APPROVED_VERIFIED",
+					"DENIED_FRAUD",
+					"DENIED_UNSUPPORTED_ID_TYPE",
+					"DENIED_UNSUPPORTED_ID_COUNTRY",
+					"ERROR_NOT_READABLE_ID",
+					"NO_ID_UPLOADED"
+				],
+				"description": "Shows Identity verification status"
+			},
+			"KycData": {
+				"properties": {
+					"idVerificationStatus": {
+						"$ref": "#/components/schemas/IdVerificationStatus",
+						"description": "Shows identity verification status"
+					},
+					"callbackDate": {
+						"type": "string",
+						"description": "Timestamp (UTC) of the callback creation"
+					},
+					"rgNumber": {
+						"type": "string",
+						"description": "General Registration number"
+					},
+					"personalIdentificationNumber": {
+						"type": "string",
+						"description": "Personal identification number as available on the ID"
+					},
+					"taxNumber": {
+						"type": "string",
+						"description": "Tax number of the document"
+					},
+					"passportNumber": {
+						"type": "string",
+						"description": "Passport number if type = VISA and additional extraction for Visa enabled"
+					},
+					"clientIp": {
+						"type": "string",
+						"description": "IP address of the client"
+					},
+					"verificationDate": {
+						"type": "string",
+						"description": "Timestamp of the identity verification transaction creation"
+					},
+					"identityVerification": {
+						"$ref": "#/components/schemas/IdentityVerification",
+						"description": "Provides Id document verification details"
+					},
+					"placeOfBirth": {
+						"$ref": "#/components/schemas/CountryIso2Code",
+						"description": "Place of birth of document holder"
+					},
+					"idDocument": {
+						"$ref": "#/components/schemas/IdDocument",
+						"description": "Data extracted from a provided identity document"
+					},
+					"gender": {
+						"$ref": "#/components/schemas/JumioGender",
+						"description": "Gender of document holder"
+					},
+					"nationality": {
+						"$ref": "#/components/schemas/CountryIso2Code",
+						"description": "Nationality as available on the ID in 3166-1 alpha-3  format"
+					},
+					"address": {
+						"$ref": "#/components/schemas/Address",
+						"description": "Address as available on the ID"
+					},
+					"dateOfBirth": {
+						"type": "string",
+						"description": "Date of birth in the format YYYY-MM-DD as available on the ID"
+					},
+					"fathersName": {
+						"type": "string",
+						"description": "Name of the document holder's father"
+					},
+					"mothersName": {
+						"type": "string",
+						"description": "Name of the document holder's mother"
+					},
+					"lastName": {
+						"type": "string",
+						"description": "Last name of the customer as available on the ID"
+					},
+					"firstName": {
+						"type": "string",
+						"description": "First name of the customer as available on the ID"
+					}
+				},
+				"required": [
+					"idVerificationStatus"
+				],
+				"type": "object",
+				"description": "Know Your Customer data extracted from provided Identity verification document for sending onboarding service"
+			},
+			"MatchStatusType": {
+				"type": "string",
+				"enum": [
+					"no_match",
+					"false_positive",
+					"potential_match",
+					"true_positive",
+					"unknown",
+					"true_positive_approve",
+					"true_positive_reject"
+				],
+				"description": "The match status type of the person"
+			},
+			"RiskLevelType": {
+				"type": "string",
+				"enum": [
+					"low",
+					"medium",
+					"high",
+					"unknown"
+				],
+				"description": "The risk level type of the person"
+			},
+			"KycComplianceResponse": {
+				"properties": {
+					"hits": {
+						"items": {},
+						"type": "array",
+						"description": "The hits of the entity"
+					},
+					"totalMatches": {
+						"type": "number",
+						"format": "double",
+						"description": "The total matches of the entity"
+					},
+					"labels": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"description": "The labels of the entity"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"description": "The tags of the entity"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "The creation date of the entity"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "The update date of the entity"
+					},
+					"totalHits": {
+						"type": "number",
+						"format": "double",
+						"description": "The total hits of the entity"
+					},
+					"clientRef": {
+						"type": "string",
+						"description": "The client ref of the entity"
+					},
+					"submittedTerm": {
+						"type": "string",
+						"description": "The submitted term of the entity"
+					},
+					"searchTerm": {
+						"type": "string",
+						"description": "The search term of the entity"
+					},
+					"riskLevel": {
+						"$ref": "#/components/schemas/RiskLevelType",
+						"description": "The risk level of the entity"
+					},
+					"matchStatus": {
+						"$ref": "#/components/schemas/MatchStatusType",
+						"description": "The match status of the entity"
+					}
+				},
+				"type": "object",
+				"description": "Response object of entity check"
+			},
+			"PersonalDetails": {
+				"properties": {
+					"occupation": {
+						"type": "string"
+					},
+					"address": {
+						"$ref": "#/components/schemas/Address"
+					},
+					"gender": {
+						"type": "string"
+					},
+					"nationality": {
+						"$ref": "#/components/schemas/CountryIso2Code"
+					},
+					"dateOfBirth": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"middleName": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"dateOfBirth",
+					"lastName",
+					"firstName",
+					"title"
+				],
+				"type": "object"
+			},
+			"ComplianceCompanyMember": {
+				"properties": {
+					"country": {
+						"type": "string"
+					},
+					"companyName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					}
+				},
+				"type": "object"
+			},
+			"MemberCompliance": {
+				"properties": {
+					"compliance": {
+						"$ref": "#/components/schemas/KycComplianceResponse"
+					},
+					"member": {
+						"$ref": "#/components/schemas/ComplianceCompanyMember"
+					}
+				},
+				"required": [
+					"member"
+				],
+				"type": "object"
+			},
+			"OnboardingData": {
+				"properties": {
+					"memberCompliances": {
+						"items": {
+							"$ref": "#/components/schemas/MemberCompliance"
+						},
+						"type": "array"
+					},
+					"personalDetails": {
+						"$ref": "#/components/schemas/PersonalDetails"
+					},
+					"compliance": {
+						"$ref": "#/components/schemas/KycComplianceResponse"
+					},
+					"kycData": {
+						"$ref": "#/components/schemas/KycData"
+					},
+					"companyData": {
+						"$ref": "#/components/schemas/CompanyData"
+					},
+					"companyInfoResponse": {
+						"$ref": "#/components/schemas/CompanyInfoResponse"
+					},
+					"accountHolderId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"memberCompliances",
+					"personalDetails",
+					"compliance",
+					"kycData",
+					"companyData",
+					"companyInfoResponse",
+					"accountHolderId"
+				],
+				"type": "object"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "sap-server",
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/onboarding-data/{id}": {
+			"put": {
+				"operationId": "PutOnboardingData",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"404": {
+						"description": "Not found"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/OnboardingData"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

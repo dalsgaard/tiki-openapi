@@ -1,0 +1,4620 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bank Employee - Bank Account & Contract Overview",
+    "version": "v.2.0167",
+    "description": "Entity Data Model![ER Diagram](https://yuml.me/diagram/class/[Account],[Account]-*>[Transaction],[Account]-*>[Prenote],[Account]-*>[Balance],[Account]-*>[RelationIn],[Account]-*>[RelationOut],[Balance],[Transaction],[Transaction]-*>[PaymentNote],[PaymentNote],[Prenote],[Prenote]-*>[PrenoteNote],[PrenoteNote],[RelationIn],[RelationOut])<br><br>generated out from DS4/110 on 02.06.2022 09:29:53 0 by TU_SCP_OAPI <br><br>last definition change DS4K900552 API Changes , by C5330593  at 25.01.2022 18:15:38"
+  },
+  "servers": [
+    {
+      "url": "https://apis-tbol-dev.apimanagement.eu2.hana.ondemand.com/s4b/v1/bacovr",
+      "description": "C4B DEV Environment"
+    },
+    {
+      "url": "https://your.btpt.tenant.qas.com/s4b/v1/bacovr",
+      "description": "C4B QAS Environment"
+    },
+    {
+      "url": "https://your.btpt.tenant.prd.com/s4b/v1/bacovr",
+      "description": "C4B PRD Environment - Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "AccountSet"
+    },
+    {
+      "name": "BalanceSet"
+    },
+    {
+      "name": "TransactionSet"
+    },
+    {
+      "name": "PaymentNoteSet"
+    },
+    {
+      "name": "PrenoteSet"
+    },
+    {
+      "name": "PrenoteNoteSet"
+    },
+    {
+      "name": "RelationInSet"
+    },
+    {
+      "name": "RelationOutSet"
+    }
+  ],
+  "paths": {
+    "/AccountSet": {
+      "get": {
+        "summary": "Read Accounts",
+        "tags": [
+          "AccountSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "ID desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountHolderDescription",
+                  "AccountHolderDescription desc",
+                  "AccountHolderCategoryID",
+                  "AccountHolderCategoryID desc",
+                  "AccountHolderCategory",
+                  "AccountHolderCategory desc",
+                  "BankAccountID",
+                  "BankAccountID desc",
+                  "BankRoutingID",
+                  "BankRoutingID desc",
+                  "BankCountryCode",
+                  "BankCountryCode desc",
+                  "ProductType",
+                  "ProductType desc",
+                  "ProductID",
+                  "ProductID desc",
+                  "ProductName",
+                  "ProductName desc",
+                  "Currency",
+                  "Currency desc",
+                  "Purpose",
+                  "Purpose desc",
+                  "ManagerID",
+                  "ManagerID desc",
+                  "ManagerName",
+                  "ManagerName desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "ClosureDate",
+                  "ClosureDate desc",
+                  "CurrentPostingDate",
+                  "CurrentPostingDate desc",
+                  "AccountLocked",
+                  "AccountLocked desc",
+                  "Status",
+                  "Status desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "ActivityStatus",
+                  "ActivityStatus desc",
+                  "ActivityStatusName",
+                  "ActivityStatusName desc",
+                  "CurrentBalance",
+                  "CurrentBalance desc",
+                  "CommittedLimit",
+                  "CommittedLimit desc",
+                  "NextDateBankStatement",
+                  "NextDateBankStatement desc",
+                  "NextDateBalanceConfirmation",
+                  "NextDateBalanceConfirmation desc",
+                  "AccountCreationTS",
+                  "AccountCreationTS desc",
+                  "AccountCreationUser",
+                  "AccountCreationUser desc",
+                  "AccountChangeTS",
+                  "AccountChangeTS desc",
+                  "AccountChangeUser",
+                  "AccountChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "AccountHolderID",
+                  "AccountHolderDescription",
+                  "AccountHolderCategoryID",
+                  "AccountHolderCategory",
+                  "BankAccountID",
+                  "BankRoutingID",
+                  "BankCountryCode",
+                  "ProductType",
+                  "ProductID",
+                  "ProductName",
+                  "Currency",
+                  "Purpose",
+                  "ManagerID",
+                  "ManagerName",
+                  "StartDate",
+                  "ClosureDate",
+                  "CurrentPostingDate",
+                  "AccountLocked",
+                  "Status",
+                  "StatusName",
+                  "ActivityStatus",
+                  "ActivityStatusName",
+                  "CurrentBalance",
+                  "CommittedLimit",
+                  "NextDateBankStatement",
+                  "NextDateBalanceConfirmation",
+                  "AccountCreationTS",
+                  "AccountCreationUser",
+                  "AccountChangeTS",
+                  "AccountChangeUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Transactions",
+                  "Prenotes",
+                  "Balances",
+                  "RelationsIn",
+                  "RelationsOut"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Accounts",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single Account",
+        "tags": [
+          "AccountSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ID",
+                  "AccountHolderID",
+                  "AccountHolderDescription",
+                  "AccountHolderCategoryID",
+                  "AccountHolderCategory",
+                  "BankAccountID",
+                  "BankRoutingID",
+                  "BankCountryCode",
+                  "ProductType",
+                  "ProductID",
+                  "ProductName",
+                  "Currency",
+                  "Purpose",
+                  "ManagerID",
+                  "ManagerName",
+                  "StartDate",
+                  "ClosureDate",
+                  "CurrentPostingDate",
+                  "AccountLocked",
+                  "Status",
+                  "StatusName",
+                  "ActivityStatus",
+                  "ActivityStatusName",
+                  "CurrentBalance",
+                  "CommittedLimit",
+                  "NextDateBankStatement",
+                  "NextDateBalanceConfirmation",
+                  "AccountCreationTS",
+                  "AccountCreationUser",
+                  "AccountChangeTS",
+                  "AccountChangeUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Transactions",
+                  "Prenotes",
+                  "Balances",
+                  "RelationsIn",
+                  "RelationsOut"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Account",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.Account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')/Transactions": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read Transactions of a single Account",
+        "tags": [
+          "AccountSet",
+          "TransactionSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc",
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Transactions of a single Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Transactions",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Transaction"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')/Prenotes": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read Prenotes of a single Account",
+        "tags": [
+          "AccountSet",
+          "PrenoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc",
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Prenotes of a single Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Prenotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Prenote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')/Balances": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read Balances of a single Account",
+        "tags": [
+          "AccountSet",
+          "BalanceSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc",
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Balances of a single Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Balances",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Balance"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')/RelationsIn": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read RelationsIn of a single Account",
+        "tags": [
+          "AccountSet",
+          "RelationInSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc",
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationIns of a single Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of RelationIns",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.RelationIn"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/AccountSet('{ID}')/RelationsOut": {
+      "parameters": [
+        {
+          "name": "ID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read RelationsOut of a single Account",
+        "tags": [
+          "AccountSet",
+          "RelationOutSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc",
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationOuts of a single Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of RelationOuts",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.RelationOut"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/BalanceSet": {
+      "get": {
+        "summary": "Read Balances",
+        "tags": [
+          "BalanceSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "Code",
+                  "Name",
+                  "Amount",
+                  "Currency"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Balances",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Balances",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Balance"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/BalanceSet(AccountID='{AccountID}',Code='{Code}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "Code",
+          "in": "path",
+          "required": true,
+          "description": "Balance Code",
+          "schema": {
+            "type": "string",
+            "maxLength": 4
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single Balance",
+        "tags": [
+          "BalanceSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "Code",
+                  "Name",
+                  "Amount",
+                  "Currency"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Balance",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.Balance"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/TransactionSet": {
+      "get": {
+        "summary": "Read Transactions",
+        "tags": [
+          "TransactionSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "PaymentTypeCode",
+                  "PaymentTypeCode desc",
+                  "PaymentTypeName",
+                  "PaymentTypeName desc",
+                  "TransactionTypeCode",
+                  "TransactionTypeCode desc",
+                  "TransactionTypeName",
+                  "TransactionTypeName desc",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelCode desc",
+                  "CommunicationChannelName",
+                  "CommunicationChannelName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "PostingDate",
+                  "PostingDate desc",
+                  "ValueDate",
+                  "ValueDate desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeCode desc",
+                  "ExchangeRateTypeName",
+                  "ExchangeRateTypeName desc",
+                  "ExchangeRate",
+                  "ExchangeRate desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "ReversalReasonCode",
+                  "ReversalReasonCode desc",
+                  "ReversalReasonName",
+                  "ReversalReasonName desc",
+                  "ReversalAllowed",
+                  "ReversalAllowed desc",
+                  "RefundAllowed",
+                  "RefundAllowed desc",
+                  "ReturnReasonCode",
+                  "ReturnReasonCode desc",
+                  "ReturnReasonName",
+                  "ReturnReasonName desc",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyAccountHolder desc",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankCountry desc",
+                  "CounterPartyBankID",
+                  "CounterPartyBankID desc",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccountID desc",
+                  "CounterPartyBankAccount",
+                  "CounterPartyBankAccount desc",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderID desc",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentTransactionOrderItemID desc",
+                  "PaymentNote",
+                  "PaymentNote desc",
+                  "ReferenceAdjustmentTransactionID",
+                  "ReferenceAdjustmentTransactionID desc",
+                  "PendingSettlementEntryReference",
+                  "PendingSettlementEntryReference desc",
+                  "isCancellationTransaction",
+                  "isCancellationTransaction desc",
+                  "CancelledTransactionReference",
+                  "CancelledTransactionReference desc",
+                  "CancellationTransactionReference",
+                  "CancellationTransactionReference desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc",
+                  "ReleaseTS",
+                  "ReleaseTS desc",
+                  "ReleaseUser",
+                  "ReleaseUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "TransactionID",
+                  "TypeCode",
+                  "TypeName",
+                  "PaymentTypeCode",
+                  "PaymentTypeName",
+                  "TransactionTypeCode",
+                  "TransactionTypeName",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelName",
+                  "AccountHolderID",
+                  "AccountProductType",
+                  "AccountProductID",
+                  "PostingDate",
+                  "RunningBalance",
+                  "ValueDate",
+                  "StatusCode",
+                  "StatusName",
+                  "DebitIndicator",
+                  "Amount",
+                  "Currency",
+                  "AmountAC",
+                  "CurrencyAC",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeName",
+                  "ExchangeRate",
+                  "PrenoteID",
+                  "ReversalReasonCode",
+                  "ReversalReasonName",
+                  "ReversalAllowed",
+                  "RefundAllowed",
+                  "ReturnReasonCode",
+                  "ReturnReasonName",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankID",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccount",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentNote",
+                  "ReferenceAdjustmentTransactionID",
+                  "PendingSettlementEntryReference",
+                  "isCancellationTransaction",
+                  "CancelledTransactionReference",
+                  "CancellationTransactionReference",
+                  "CreationTS",
+                  "CreationUser",
+                  "ChangeTS",
+                  "ChangeUser",
+                  "ReleaseTS",
+                  "ReleaseUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PaymentNotes"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Transactions",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Transaction"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/TransactionSet(AccountID='{AccountID}',TransactionID='{TransactionID}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "TransactionID",
+          "in": "path",
+          "required": true,
+          "description": "Transaction ID",
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single Transaction",
+        "tags": [
+          "TransactionSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "TransactionID",
+                  "TypeCode",
+                  "TypeName",
+                  "PaymentTypeCode",
+                  "PaymentTypeName",
+                  "TransactionTypeCode",
+                  "TransactionTypeName",
+                  "CommunicationChannelCode",
+                  "CommunicationChannelName",
+                  "AccountHolderID",
+                  "AccountProductType",
+                  "AccountProductID",
+                  "PostingDate",
+                  "RunningBalance",
+                  "ValueDate",
+                  "StatusCode",
+                  "StatusName",
+                  "DebitIndicator",
+                  "Amount",
+                  "Currency",
+                  "AmountAC",
+                  "CurrencyAC",
+                  "ExchangeRateTypeCode",
+                  "ExchangeRateTypeName",
+                  "ExchangeRate",
+                  "PrenoteID",
+                  "ReversalReasonCode",
+                  "ReversalReasonName",
+                  "ReversalAllowed",
+                  "RefundAllowed",
+                  "ReturnReasonCode",
+                  "ReturnReasonName",
+                  "CounterPartyAccountHolder",
+                  "CounterPartyBankCountry",
+                  "CounterPartyBankID",
+                  "CounterPartyBankAccountID",
+                  "CounterPartyBankAccount",
+                  "PaymentTransactionOrderID",
+                  "PaymentTransactionOrderItemID",
+                  "PaymentNote",
+                  "ReferenceAdjustmentTransactionID",
+                  "PendingSettlementEntryReference",
+                  "isCancellationTransaction",
+                  "CancelledTransactionReference",
+                  "CancellationTransactionReference",
+                  "CreationTS",
+                  "CreationUser",
+                  "ChangeTS",
+                  "ChangeUser",
+                  "ReleaseTS",
+                  "ReleaseUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PaymentNotes"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Transaction",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.Transaction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/TransactionSet(AccountID='{AccountID}',TransactionID='{TransactionID}')/PaymentNotes": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "TransactionID",
+          "in": "path",
+          "required": true,
+          "description": "Transaction ID",
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read PaymentNotes of a single Transaction",
+        "tags": [
+          "TransactionSet",
+          "PaymentNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "NoteNumber",
+                  "NoteNumber desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "Note",
+                  "Note desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "TransactionID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "TypeName",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PaymentNotes of a single Transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of PaymentNotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.PaymentNote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PaymentNoteSet": {
+      "get": {
+        "summary": "Read PaymentNotes",
+        "tags": [
+          "PaymentNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "TransactionID",
+                  "TransactionID desc",
+                  "NoteNumber",
+                  "NoteNumber desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "Note",
+                  "Note desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "TransactionID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "TypeName",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PaymentNotes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of PaymentNotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.PaymentNote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PaymentNoteSet(AccountID='{AccountID}',TransactionID='{TransactionID}',NoteNumber='{NoteNumber}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "TransactionID",
+          "in": "path",
+          "required": true,
+          "description": "Transaction ID",
+          "schema": {
+            "type": "string",
+            "maxLength": 35
+          }
+        },
+        {
+          "name": "NoteNumber",
+          "in": "path",
+          "required": true,
+          "description": "Note Number",
+          "schema": {
+            "type": "string",
+            "maxLength": 3
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single PaymentNote",
+        "tags": [
+          "PaymentNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "TransactionID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "TypeName",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PaymentNote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "PaymentNote",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.PaymentNote"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PrenoteSet": {
+      "get": {
+        "summary": "Read Prenotes",
+        "tags": [
+          "PrenoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "PrenoteID",
+                  "PrenoteID desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "TypeName",
+                  "TypeName desc",
+                  "AccountHolderID",
+                  "AccountHolderID desc",
+                  "AccountProductType",
+                  "AccountProductType desc",
+                  "AccountProductID",
+                  "AccountProductID desc",
+                  "DebitIndicator",
+                  "DebitIndicator desc",
+                  "Amount",
+                  "Amount desc",
+                  "Currency",
+                  "Currency desc",
+                  "AmountAC",
+                  "AmountAC desc",
+                  "CurrencyAC",
+                  "CurrencyAC desc",
+                  "StartDate",
+                  "StartDate desc",
+                  "EndDate",
+                  "EndDate desc",
+                  "PlannedEndDate",
+                  "PlannedEndDate desc",
+                  "ValidIndicator",
+                  "ValidIndicator desc",
+                  "StatusCode",
+                  "StatusCode desc",
+                  "StatusName",
+                  "StatusName desc",
+                  "CreationTS",
+                  "CreationTS desc",
+                  "CreationUser",
+                  "CreationUser desc",
+                  "ChangeTS",
+                  "ChangeTS desc",
+                  "ChangeUser",
+                  "ChangeUser desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "PrenoteUUID",
+                  "PrenoteID",
+                  "TypeCode",
+                  "TypeName",
+                  "AccountHolderID",
+                  "AccountProductType",
+                  "AccountProductID",
+                  "DebitIndicator",
+                  "Amount",
+                  "Currency",
+                  "AmountAC",
+                  "CurrencyAC",
+                  "StartDate",
+                  "EndDate",
+                  "PlannedEndDate",
+                  "ValidIndicator",
+                  "StatusCode",
+                  "StatusName",
+                  "CreationTS",
+                  "CreationUser",
+                  "ChangeTS",
+                  "ChangeUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PrenoteNotes"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Prenotes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of Prenotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.Prenote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PrenoteSet(AccountID='{AccountID}',PrenoteUUID='{PrenoteUUID}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "PrenoteUUID",
+          "in": "path",
+          "required": true,
+          "description": "Prenote UUID",
+          "schema": {
+            "type": "string",
+            "maxLength": 0
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single Prenote",
+        "tags": [
+          "PrenoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "PrenoteUUID",
+                  "PrenoteID",
+                  "TypeCode",
+                  "TypeName",
+                  "AccountHolderID",
+                  "AccountProductType",
+                  "AccountProductID",
+                  "DebitIndicator",
+                  "Amount",
+                  "Currency",
+                  "AmountAC",
+                  "CurrencyAC",
+                  "StartDate",
+                  "EndDate",
+                  "PlannedEndDate",
+                  "ValidIndicator",
+                  "StatusCode",
+                  "StatusName",
+                  "CreationTS",
+                  "CreationUser",
+                  "ChangeTS",
+                  "ChangeUser"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand related entities, see [Expand](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=63)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PrenoteNotes"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Prenote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Prenote",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.Prenote"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PrenoteSet(AccountID='{AccountID}',PrenoteUUID='{PrenoteUUID}')/PrenoteNotes": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "PrenoteUUID",
+          "in": "path",
+          "required": true,
+          "description": "Prenote UUID",
+          "schema": {
+            "type": "string",
+            "maxLength": 0
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read PrenoteNotes of a single Prenote",
+        "tags": [
+          "PrenoteSet",
+          "PrenoteNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "NoteNumber",
+                  "NoteNumber desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "Note",
+                  "Note desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "PrenoteUUID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PrenoteNotes of a single Prenote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of PrenoteNotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.PrenoteNote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PrenoteNoteSet": {
+      "get": {
+        "summary": "Read PrenoteNotes",
+        "tags": [
+          "PrenoteNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "AccountID desc",
+                  "PrenoteUUID",
+                  "PrenoteUUID desc",
+                  "NoteNumber",
+                  "NoteNumber desc",
+                  "TypeCode",
+                  "TypeCode desc",
+                  "Note",
+                  "Note desc"
+                ]
+              }
+            }
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "PrenoteUUID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PrenoteNotes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of PrenoteNotes",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.PrenoteNote"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/PrenoteNoteSet(AccountID='{AccountID}',PrenoteUUID='{PrenoteUUID}',NoteNumber='{NoteNumber}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "PrenoteUUID",
+          "in": "path",
+          "required": true,
+          "description": "Prenote UUID",
+          "schema": {
+            "type": "string",
+            "maxLength": 0
+          }
+        },
+        {
+          "name": "NoteNumber",
+          "in": "path",
+          "required": true,
+          "description": "Note Number",
+          "schema": {
+            "type": "string",
+            "maxLength": 3
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single PrenoteNote",
+        "tags": [
+          "PrenoteNoteSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "PrenoteUUID",
+                  "NoteNumber",
+                  "TypeCode",
+                  "Note"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved PrenoteNote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "PrenoteNote",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.PrenoteNote"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/RelationInSet": {
+      "get": {
+        "summary": "Read RelationIns",
+        "tags": [
+          "RelationInSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationIns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of RelationIns",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.RelationIn"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/RelationInSet(AccountID='{AccountID}',InstructionID='{InstructionID}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "InstructionID",
+          "in": "path",
+          "required": true,
+          "description": "Relation ID",
+          "schema": {
+            "type": "string",
+            "maxLength": 0
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single RelationIn",
+        "tags": [
+          "RelationInSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationIn",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "RelationIn",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.RelationIn"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/RelationOutSet": {
+      "get": {
+        "summary": "Read RelationOuts",
+        "tags": [
+          "RelationOutSet"
+        ],
+        "parameters": [
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/components/parameters/count"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationOuts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Wrapper",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "title": "Collection of RelationOuts",
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/bacovr.RelationOut"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    },
+    "/RelationOutSet(AccountID='{AccountID}',InstructionID='{InstructionID}')": {
+      "parameters": [
+        {
+          "name": "AccountID",
+          "in": "path",
+          "required": true,
+          "description": "Bank Account ID (IBAN if available, otherwise unique string)",
+          "schema": {
+            "type": "string",
+            "maxLength": 80
+          }
+        },
+        {
+          "name": "InstructionID",
+          "in": "path",
+          "required": true,
+          "description": "Relation ID",
+          "schema": {
+            "type": "string",
+            "maxLength": 0
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read single RelationOut",
+        "tags": [
+          "RelationOutSet"
+        ],
+        "parameters": [
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "Select properties to be returned, see [Select](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=68)",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AccountID",
+                  "InstructionID",
+                  "InstructionTypeCode",
+                  "InstructionTypeName",
+                  "RelatedBankAccountID"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved RelationOut",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "RelationOut",
+                  "type": "object",
+                  "properties": {
+                    "d": {
+                      "$ref": "#/components/schemas/bacovr.RelationOut"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Responsible for Error Resolution: API Consumer)"
+          },
+          "403": {
+            "description": "Forbidden (Responsible for Error Resolution: API Consumer)"
+          },
+          "404": {
+            "description": "Not Found (Responsible for Error Resolution: SAP Operations)"
+          },
+          "500": {
+            "description": "Internal Server Error (Responsible for Error Resolution: SAP Operations)"
+          },
+          "502": {
+            "description": "Bad Gateway (Responsible for Error Resolution: SAP Operations)"
+          },
+          "503": {
+            "description": "Service unavailable (Responsible for Error Resolution: SAP Operations)"
+          },
+          "504": {
+            "description": "Gateway Timeout (Responsible for Error Resolution: SAP Operations)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "bacovr.Account": {
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "AccountHolderID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Account Holder ID (aka \"Customer Number\")"
+          },
+          "AccountHolderDescription": {
+            "type": "string",
+            "maxLength": 81,
+            "title": "Account Holder Description (Name + Address)"
+          },
+          "AccountHolderCategoryID": {
+            "type": "string",
+            "maxLength": 1,
+            "title": "Account Holder Category ID (Type of the Customer)"
+          },
+          "AccountHolderCategory": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Account Holder Category (Type of the Customer)"
+          },
+          "BankAccountID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Bank Account Number"
+          },
+          "BankRoutingID": {
+            "type": "string",
+            "maxLength": 15,
+            "title": "Bank Routing ID"
+          },
+          "BankCountryCode": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Bank Country Code"
+          },
+          "ProductType": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Product Type (ACCT, DEPT, LOAN)"
+          },
+          "ProductID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Product ID"
+          },
+          "ProductName": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Product Name"
+          },
+          "Currency": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Account Currency"
+          },
+          "Purpose": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Account Purpose (any Usage Note)"
+          },
+          "ManagerID": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Contract Manager ID"
+          },
+          "ManagerName": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Contract Manager Name"
+          },
+          "StartDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Contract Start Date (YYYYMMDD)"
+          },
+          "ClosureDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Contract Closure Date (YYYYMMDD)"
+          },
+          "CurrentPostingDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Current Posting Date"
+          },
+          "AccountLocked": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Indiactor that Bank Account is LOCKED for postings"
+          },
+          "Status": {
+            "type": "string",
+            "maxLength": 2,
+            "title": "Contract Status"
+          },
+          "StatusName": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Contract Status Name"
+          },
+          "ActivityStatus": {
+            "type": "string",
+            "maxLength": 2,
+            "title": "Account Activity Status"
+          },
+          "ActivityStatusName": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Account Activity Name"
+          },
+          "CurrentBalance": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Current Account Balance"
+          },
+          "CommittedLimit": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Committed Limit"
+          },
+          "NextDateBankStatement": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Next Date Bank Statement (YYYYMMDD)"
+          },
+          "NextDateBalanceConfirmation": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Next Date BalanceC onfirmation (YYYYMMDD)"
+          },
+          "AccountCreationTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Account Creation Timestamp"
+          },
+          "AccountCreationUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Account Creation User"
+          },
+          "AccountChangeTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Account Change Timestamp"
+          },
+          "AccountChangeUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Account Change User"
+          },
+          "Transactions": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.Transaction"
+                }
+              }
+            }
+          },
+          "Prenotes": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.Prenote"
+                }
+              }
+            }
+          },
+          "Balances": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.Balance"
+                }
+              }
+            }
+          },
+          "RelationsIn": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.RelationIn"
+                }
+              }
+            }
+          },
+          "RelationsOut": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.RelationOut"
+                }
+              }
+            }
+          }
+        },
+        "title": "Bank Account"
+      },
+      "bacovr.Balance": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "Code": {
+            "type": "string",
+            "maxLength": 4,
+            "title": "Balance Code"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Balance Name"
+          },
+          "Amount": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Balance Amount"
+          },
+          "Currency": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Currency"
+          }
+        },
+        "title": "Balance Key Figure"
+      },
+      "bacovr.Transaction": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "TransactionID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Transaction ID"
+          },
+          "TypeCode": {
+            "type": "string",
+            "maxLength": 1,
+            "title": "Type Code"
+          },
+          "TypeName": {
+            "type": "string",
+            "maxLength": 17,
+            "title": "Type Name"
+          },
+          "PaymentTypeCode": {
+            "type": "string",
+            "maxLength": 1,
+            "title": "Payment Type Code"
+          },
+          "PaymentTypeName": {
+            "type": "string",
+            "maxLength": 15,
+            "title": "Payment Type Name"
+          },
+          "TransactionTypeCode": {
+            "type": "string",
+            "maxLength": 6,
+            "title": "Transaction Type Code"
+          },
+          "TransactionTypeName": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Transaction Type Name"
+          },
+          "CommunicationChannelCode": {
+            "type": "string",
+            "maxLength": 4,
+            "title": "Communication Channel Code"
+          },
+          "CommunicationChannelName": {
+            "type": "string",
+            "maxLength": 25,
+            "title": "Communication Channel Name"
+          },
+          "AccountHolderID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Account Holder ID (aka \"Customer Number\")"
+          },
+          "AccountProductType": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Product Type (ACCT, DEPT, LOAN)"
+          },
+          "AccountProductID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Product ID"
+          },
+          "PostingDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Posting Date (YYYYMMDD)"
+          },
+          "RunningBalance": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Running Balance (Bank Account Balance after this transact.)"
+          },
+          "ValueDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Value Date (YYYYMMDD)"
+          },
+          "StatusCode": {
+            "type": "string",
+            "maxLength": 2,
+            "title": "Transaction Status Code"
+          },
+          "StatusName": {
+            "type": "string",
+            "maxLength": 19,
+            "title": "Transaction Status Name"
+          },
+          "DebitIndicator": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Debit Indicator"
+          },
+          "Amount": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Amount in Transaction Currency"
+          },
+          "Currency": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Transaction Currency"
+          },
+          "AmountAC": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Amount in Account Currency"
+          },
+          "CurrencyAC": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Account Currency"
+          },
+          "ExchangeRateTypeCode": {
+            "type": "string",
+            "maxLength": 4,
+            "title": "Exchange Rate Type Code"
+          },
+          "ExchangeRateTypeName": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Exchange Rate Type Name"
+          },
+          "ExchangeRate": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.0000100000,
+            "example": 1.8736400000,
+            "title": "Exchange Rate"
+          },
+          "PrenoteID": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Prenote ID"
+          },
+          "ReversalReasonCode": {
+            "type": "string",
+            "maxLength": 4,
+            "title": "Reversal Reason Code"
+          },
+          "ReversalReasonName": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Reversal Reason Name"
+          },
+          "ReversalAllowed": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Reversal Allowed"
+          },
+          "RefundAllowed": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Refund Allowed"
+          },
+          "ReturnReasonCode": {
+            "type": "string",
+            "maxLength": 4,
+            "title": "Return Reason Code"
+          },
+          "ReturnReasonName": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Return Reason Name"
+          },
+          "CounterPartyAccountHolder": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Counter Party Account Holder"
+          },
+          "CounterPartyBankCountry": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Counter Party Bank Country"
+          },
+          "CounterPartyBankID": {
+            "type": "string",
+            "maxLength": 15,
+            "title": "Counter Party Bank ID"
+          },
+          "CounterPartyBankAccountID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Counter Party Bank Account ID"
+          },
+          "CounterPartyBankAccount": {
+            "type": "string",
+            "maxLength": 55,
+            "title": "Counter Party Bank Account"
+          },
+          "PaymentTransactionOrderID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Payment Transaction Order ID"
+          },
+          "PaymentTransactionOrderItemID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Payment Transaction Order Item ID"
+          },
+          "PaymentNote": {
+            "type": "string",
+            "maxLength": 263,
+            "title": "Payment Notes"
+          },
+          "ReferenceAdjustmentTransactionID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Reference Adjustment Transaction ID"
+          },
+          "PendingSettlementEntryReference": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Pending Settlement Entry Reference"
+          },
+          "isCancellationTransaction": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "is Cancellation Transaction"
+          },
+          "CancelledTransactionReference": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Cancelled Transaction Reference"
+          },
+          "CancellationTransactionReference": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Cancellation Transaction Reference"
+          },
+          "CreationTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Creation Timestamp"
+          },
+          "CreationUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Creation User"
+          },
+          "ChangeTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Change Timestamp"
+          },
+          "ChangeUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Change User"
+          },
+          "ReleaseTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Release Timestamp"
+          },
+          "ReleaseUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Release User"
+          },
+          "PaymentNotes": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.PaymentNote"
+                }
+              }
+            }
+          }
+        },
+        "title": "Transaction"
+      },
+      "bacovr.PaymentNote": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "TransactionID": {
+            "type": "string",
+            "maxLength": 35,
+            "title": "Transaction ID"
+          },
+          "NoteNumber": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Note Number"
+          },
+          "TypeCode": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Type Code"
+          },
+          "TypeName": {
+            "type": "string",
+            "maxLength": 31,
+            "title": "Type Name"
+          },
+          "Note": {
+            "type": "string",
+            "maxLength": 70,
+            "title": "Note"
+          }
+        },
+        "title": "Payment Note"
+      },
+      "bacovr.Prenote": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "PrenoteUUID": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Prenote UUID"
+          },
+          "PrenoteID": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Prenote ID"
+          },
+          "TypeCode": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Type Code"
+          },
+          "TypeName": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Type Name"
+          },
+          "AccountHolderID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Account Holder ID (aka \"Customer Number\")"
+          },
+          "AccountProductType": {
+            "type": "string",
+            "maxLength": 30,
+            "title": "Product Type (ACCT, DEPT, LOAN)"
+          },
+          "AccountProductID": {
+            "type": "string",
+            "maxLength": 10,
+            "title": "Product ID"
+          },
+          "DebitIndicator": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Debit Indicator"
+          },
+          "Amount": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Amount in Prenote Currency"
+          },
+          "Currency": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Prenote Currency"
+          },
+          "AmountAC": {
+            "type": "string",
+            "nullable": true,
+            "format": "decimal",
+            "multipleOf": 0.01,
+            "example": 12340.99,
+            "title": "Amount in Account Currency"
+          },
+          "CurrencyAC": {
+            "type": "string",
+            "maxLength": 5,
+            "title": "Account Currency"
+          },
+          "StartDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Start Date (YYYYMMDD)"
+          },
+          "EndDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "End Date  (YYYYMMDD)"
+          },
+          "PlannedEndDate": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Planned End Date  (YYYYMMDD)"
+          },
+          "ValidIndicator": {
+            "type": "boolean",
+            "nullable": true,
+            "title": "Valid Indicator"
+          },
+          "StatusCode": {
+            "type": "string",
+            "maxLength": 2,
+            "title": "Status Code"
+          },
+          "StatusName": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Status Name"
+          },
+          "CreationTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Creation Timestamp"
+          },
+          "CreationUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Creation User"
+          },
+          "ChangeTS": {
+            "type": "string",
+            "nullable": false,
+            "example": "/Date(1492098664000)/",
+            "title": "Change Timestamp"
+          },
+          "ChangeUser": {
+            "type": "string",
+            "maxLength": 12,
+            "title": "Change User"
+          },
+          "PrenoteNotes": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/bacovr.PrenoteNote"
+                }
+              }
+            }
+          }
+        },
+        "title": "Prenote"
+      },
+      "bacovr.PrenoteNote": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "PrenoteUUID": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Prenote UUID"
+          },
+          "NoteNumber": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Note Number"
+          },
+          "TypeCode": {
+            "type": "string",
+            "maxLength": 3,
+            "title": "Type Code"
+          },
+          "Note": {
+            "type": "string",
+            "maxLength": 70,
+            "title": "Note"
+          }
+        },
+        "title": "Prenote Note"
+      },
+      "bacovr.RelationIn": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "InstructionID": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Relation ID"
+          },
+          "InstructionTypeCode": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Instruction Type (Code)"
+          },
+          "InstructionTypeName": {
+            "type": "string",
+            "maxLength": 0,
+            "title": "Instruction Type"
+          },
+          "RelatedBankAccountID": {
+            "type": "string",
+            "maxLength": 0,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          }
+        },
+        "title": "Inbound Relation (participating in)"
+      },
+      "bacovr.RelationOut": {
+        "type": "object",
+        "properties": {
+          "AccountID": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          },
+          "InstructionID": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Relation ID"
+          },
+          "InstructionTypeCode": {
+            "type": "string",
+            "maxLength": 8,
+            "title": "Instruction Type (Code)"
+          },
+          "InstructionTypeName": {
+            "type": "string",
+            "maxLength": 0,
+            "title": "Instruction Type"
+          },
+          "RelatedBankAccountID": {
+            "type": "string",
+            "maxLength": 0,
+            "title": "Bank Account ID (IBAN if available, otherwise unique string)"
+          }
+        },
+        "title": "Inbound Relation (pooling of)"
+      },
+      "error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "Code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "object",
+                "required": [
+                  "lang",
+                  "value"
+                ],
+                "properties": {
+                  "lang": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              },
+              "innererror": {
+                "type": "object",
+                "description": "The structure of this object is situation-specific"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "top": {
+        "name": "$top",
+        "in": "query",
+        "description": "Show only the first n items, see [Paging - Top](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=66)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "example": 50
+      },
+      "skip": {
+        "name": "$skip",
+        "in": "query",
+        "description": "Skip the first n items, see [Paging - Skip](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=65)",
+        "schema": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "example": 50
+      },
+      "count": {
+        "name": "$inlinecount",
+        "in": "query",
+        "description": "Include count of items, see [Inlinecount](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=67)",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "allpages",
+            "none"
+          ]
+        }
+      }
+    },
+    "responses": {
+      "error": {
+        "description": "Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

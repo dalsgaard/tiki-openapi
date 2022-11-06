@@ -41,8 +41,8 @@ module Props
       define_method :hash_props do |props = {}|
         names.each do |name|
           hashes = instance_variable_get "@#{name}"
-          if !hashes.nil? && !hashes.empty?
-            value = hashes.map(&->((n, s)) { Hash[n, s.to_spec] }).inject(&:merge)
+          unless hashes.nil?
+            value = hashes.map(&->((n, s)) { Hash[n, s.to_spec] }).inject(&:merge) || {}
             props[to_camel(name).to_sym] = value
           end
         end

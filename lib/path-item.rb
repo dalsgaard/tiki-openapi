@@ -8,7 +8,6 @@ VERBS = %i[get put post].freeze
 class PathItem
   props :ref, :summary, :description
   scalar_props :summary, :description
-  hash_props :operations
 
   def initialize(parent, summary = nil, ref: nil)
     @parameters = []
@@ -49,11 +48,10 @@ class PathItem
     if @ref
       { :$ref => @ref }
     else
-      props = {}
+      props = @operations && @operations.map(&->((n, s)) { Hash[n, s.to_spec] }).inject(&:merge) || {}
       parameters = @parent.parameters + @parameters
       props[:parameters] = parameters.map(&:to_spec) unless parameters.empty?
       scalar_props props
-      hash_props props
       props
     end
   end

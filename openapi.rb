@@ -1,9 +1,14 @@
-require "./lib/spec.rb"
+require './lib/spec'
 
-spec = Spec.new
+infile, outfile = ARGV
+puts infile, outfile
 
-spec.instance_eval File.read("./examples/demo-spec.rb")
+if infile && outfile
+  spec = Spec.new
 
-json = JSON.pretty_generate spec.to_spec
+  spec.instance_eval File.read(infile)
 
-File.write "out.spec.json", json
+  json = JSON.pretty_generate spec.to_spec
+
+  File.write outfile, json
+end

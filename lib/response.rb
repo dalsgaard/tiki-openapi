@@ -6,17 +6,17 @@ using Props
 class Response
   props :description
   scalar_props :description
-  hash_props :contents
+  hash_props :content
 
   def initialize(description = nil, _schema = nil)
     @description = description
   end
 
   def content(mime = 'application/json', schema: nil, &block)
-    @contents ||= []
+    @content ||= []
     media_type = MediaType.new schema
     media_type.instance_eval(&block) if block
-    @contents.push [mime, media_type]
+    @content.push [mime, media_type]
     media_type
   end
 

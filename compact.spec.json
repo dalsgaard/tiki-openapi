@@ -1,0 +1,15 @@
+{
+  "openapi": "3.0.3",
+  "paths": {
+    "/orders": {
+      "get": {
+        "operationId": "get_orders",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

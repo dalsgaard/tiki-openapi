@@ -48,7 +48,7 @@ class Operation
         desc = status
       elsif status.nil?
         s = 200
-        desc = nil
+        desc = reason(s)
       else
         s = status
         desc = description

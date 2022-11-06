@@ -60,5 +60,6 @@ openapi '3.0.1' do
       end
     end
     schema 'bacovr.Balance', :object
+    parameter :count
   end
 end

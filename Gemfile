@@ -1,6 +1,8 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
+
+gem 'hanami-router', '>= 2.0.0.beta4'
+gem 'puma'
 
 group :development do
-  gem "rspec"
-  gem "ruby-lsp", "~> 0.3.5"
+  gem 'rspec'
 end

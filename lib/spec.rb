@@ -58,27 +58,34 @@ class Info
 end
 
 class Components
-  def initialize
-    @schemas = []
-  end
+  hash_props :schemas, :parameters
 
   def schema(name, type = :object, title = nil, &block)
+    @schemas ||= []
     schema = Schema.new type, title
     schema.instance_eval(&block) if block
     @schemas.push [name, schema]
   end
 
+  def parameter(name = nil, ref: nil, **named, &block)
+    if ref
+      reference = Reference.new ref
+      @parameters.push [name, reference]
+    else
+      @parameters ||= []
+      parameter = Parameter.new name, **named
+      parameter.instance_eval(&block) if block
+      @parameters.push [name, parameter]
+    end
+  end
+
   def to_spec
-    props = {}
-    schemas = @schemas.map(&->((n, s)) { Hash[n, s.to_spec] }).inject(&:merge)
-    props[:schemas] = schemas if schemas
-    props
+    hash_props
   end
 end
 
 class Spec
-  scalar_props :spec_version
-  object_props :info
+  object_props :info, :components
   hash_props :paths
 
   def initialize
@@ -115,8 +122,7 @@ class Spec
   end
 
   def to_spec
-    props = {}
-    scalar_props props
+    props = { openapi: @spec_version }
     object_props props
     hash_props props
     props

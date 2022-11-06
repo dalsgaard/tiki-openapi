@@ -1,4 +1,4 @@
-require_relative "./props.rb"
+require_relative './props'
 
 using Props
 
@@ -16,7 +16,6 @@ class Schema
       named_props named
       @type = type
       @title = title
-      @properties = []
     end
   end
 
@@ -26,16 +25,17 @@ class Schema
 
   def items(type = nil, title = nil, &block)
     @items = Schema.new type, title
-    self.instance_eval &block if block
+    instance_eval(&block) if block
   end
 
   def enum(*items)
     @enum = items.flatten
   end
 
-  def property(name, type = :string, title = nil, **named, &block)
+  def property(name, type = :string, _title = nil, **named, &block)
+    @properties ||= []
     schema = Schema.new type, **named
-    schema.instance_eval &block if block
+    schema.instance_eval(&block) if block
     @properties.push [name, schema]
   end
 
@@ -43,7 +43,7 @@ class Schema
     if @ref
       { "$ref": @ref }
     else
-      props = { }
+      props = {}
       scalar_props props
       object_props props
       hash_props props

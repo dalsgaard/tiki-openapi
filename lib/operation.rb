@@ -38,7 +38,7 @@ class Operation
 
   def response(status = nil, description = nil, schema: nil, ref: nil, &block)
     if ref
-      @responses.push [status || 200, Reference.new(ref)]
+      @responses.push [status || 200, Reference.new(ref, :response)]
     else
       if status.is_a? Integer
         s = status
@@ -53,7 +53,7 @@ class Operation
         s = status
         desc = description
       end
-      response = Response.new desc, schema
+      response = Response.new desc, schema: schema
       response.instance_eval(&block) if block
       @responses.push [s, response]
     end

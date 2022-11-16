@@ -41,4 +41,8 @@ class Parameter
     props[:description] = @description if @description
     props
   end
+
+  def get_name
+    @name.to_s
+  end
 end

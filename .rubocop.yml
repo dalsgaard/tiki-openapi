@@ -30,3 +30,6 @@ Metrics/PerceivedComplexity:
 
 Naming/AccessorMethodName:
   Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false

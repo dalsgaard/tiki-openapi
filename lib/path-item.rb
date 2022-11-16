@@ -48,11 +48,19 @@ class PathItem
     if @ref
       { :$ref => @ref }
     else
-      props = @operations && @operations.map(&->((n, s)) { Hash[n, s.to_spec] }).inject(&:merge) || {}
+      props = @operations&.map(&->((n, s)) { { n => s.to_spec } })&.inject(&:merge) || {}
       parameters = @parent.parameters + @parameters
       props[:parameters] = parameters.map(&:to_spec) unless parameters.empty?
       scalar_props props
       props
+    end
+  end
+
+  def check_parameters(path)
+    parameters = @parent.parameters + @parameters
+    params = path.scan(/\{([a-zA-Z0-9_]+)\}/).map(&:first)
+    params.each do |param|
+      @parameters << Parameter.new(param, in: :path) unless parameters.find { |p| p.get_name == param }
     end
   end
 end

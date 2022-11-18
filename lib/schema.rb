@@ -16,7 +16,7 @@ class Schema
   props :title, :description, :ref, :max_length, :format
   named_props :max_length, :min_length, :format, :unique_items
   scalar_props :type, :max_length, :min_length, :title, :description, :unique_items, :format
-  object_props :items
+  object_props :items, :all_of, :one_of, :any_of
   hash_props :properties
 
   def initialize(type = nil, title = nil, **named)
@@ -78,8 +78,22 @@ class Schema
     property name, ref: ref, **named
   end
 
+  def ref?(name, ref, **named)
+    ref(name, ref, optional: true, **named)
+  end
+
   def refs(**named)
     named.each_pair { |name, ref| property name, ref: ref }
+  end
+
+  def all_of(*refs, &block)
+    @all_of = SchemaList.new(*refs)
+    @all_of.instance_eval(&block) if block
+  end
+
+  def one_of(*refs, &block)
+    @one_of = SchemaList.new(*refs)
+    @one_of.instance_eval(&block) if block
   end
 
   def to_spec
@@ -119,5 +133,29 @@ class Schema
       end
       property_shortcuts format
     end
+  end
+end
+
+class SchemaList
+  def initialize(*refs)
+    @schemas = refs.flatten.map { |ref| Reference.new(ref) }
+  end
+
+  def schema(type: :object, ref: nil, **named, &block)
+    if ref
+      @schemas << Reference.new(ref)
+    else
+      schema = Schema.new type, **named
+      schema.instance_eval(&block) if block
+      @schemas << schema
+    end
+  end
+
+  def ref(ref)
+    schema(ref: ref)
+  end
+
+  def to_spec
+    @schemas.map(&:to_spec)
   end
 end

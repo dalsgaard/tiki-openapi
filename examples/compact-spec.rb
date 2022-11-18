@@ -14,6 +14,19 @@ openapi do
     end
   end
 
+  path '/foo' do
+    get 'get_foo' do
+      response do
+        schema do
+          all_of :Foo do
+            schema { string :bar }
+            schema { string :baz }
+          end
+        end
+      end
+    end
+  end
+
   components do
     schema :Order do
       string :id
@@ -21,9 +34,13 @@ openapi do
       number? :total
       int32? :foo
       date_time? :when
-      ref :address, :Address
+      refs address?: :Address, bar: :Address
     end
 
     schema :Address
+
+    schema :Foo
+    schema :Bar
+    schema :Baz
   end
 end

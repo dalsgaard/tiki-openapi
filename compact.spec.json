@@ -28,13 +28,26 @@
           },
           "address": {
             "$ref": "#/components/schemas/Address"
+          },
+          "bar": {
+            "$ref": "#/components/schemas/Address"
           }
         },
         "required": [
-          "id"
+          "id",
+          "bar"
         ]
       },
       "Address": {
+        "type": "object"
+      },
+      "Foo": {
+        "type": "object"
+      },
+      "Bar": {
+        "type": "object"
+      },
+      "Baz": {
         "type": "object"
       }
     }
@@ -89,6 +102,49 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/foo": {
+      "get": {
+        "operationId": "get_foo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Foo"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "bar": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "bar"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "baz": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "baz"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
           }
         }
       }

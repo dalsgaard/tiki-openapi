@@ -25,32 +25,32 @@ class Response
     media_type
   end
 
-  def schema(schema = nil, ref: nil, &block)
+  def schema(type = nil, title = nil, ref: nil, **named, &block)
     if ref
       content do
         schema ref: ref
       end
     else
       content do
-        schema(schema, &block)
+        schema type, title, **named, &block
       end
     end
   end
 
-  def array(items_schema = nil, ref: nil, &block)
+  def object(title, **named, &block)
+    schema :object, title, **named, &block
+  end
+
+  def array(items_type = nil, title = nil, ref: nil, **named, &block)
     if ref
-      schema :array do
+      schema :array, title do
         items ref: ref
       end
     else
-      schema :array do
-        items items_schema, &block
+      schema :array, title do
+        items items_type, **named, &block
       end
     end
-  end
-
-  def object(&block)
-    schema :object, &block
   end
 
   def ref(ref)

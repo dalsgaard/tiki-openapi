@@ -12,25 +12,86 @@ FORMATS = [
 
 ].freeze
 
+NUMBER_PROPS = %i[
+  minimum
+  maximum
+  exclusive_minimum
+  exclusive_maximum
+  multiple_of
+].freeze
+
+STRING_PROPS = %i[
+  min_length
+  max_length
+  pattern
+].freeze
+
+OBJECT_PROPS = %i[
+  min_properties
+  max_properties
+].freeze
+
+MARKER_PROPS = %i[
+  unique_items
+  nullable
+  read_only
+  write_only
+  additional_properties
+].freeze
+
 class Schema
-  props :title, :description, :ref, :max_length, :format
-  named_props :max_length, :min_length, :format, :unique_items
-  scalar_props :type, :max_length, :min_length, :title, :description, :unique_items, :format
+  props :title, :description, :ref, :format, NUMBER_PROPS, STRING_PROPS
+  marker_props MARKER_PROPS
+  named_props :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
+  scalar_props :type, :title, :description, :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
   object_props :items, :all_of, :one_of, :any_of
   hash_props :properties
 
-  def initialize(type = nil, title = nil, **named)
+  def initialize(type = nil, title = nil, min: nil, max: nil, length: nil, range: nil, **named)
     if type.is_a? String
       @ref = type
     else
+      if length.is_a? Range
+        @max_length = length.max
+        @min_length = length.min
+      end
+      if range.is_a? Range
+        @maximum = range.max + (range.exclude_end? ? 1 : 0)
+        @minimum = range.min
+        @exclusive_maximum = range.exclude_end? || nil
+      end
       named_props named
       @type = type
       @title = title
+      if min
+        case @type
+        when :number, :integer
+          minimum min
+        when :string
+          min_length min
+        end
+      end
+      if max
+        case @type
+        when :number, :integer
+          maximum max
+        when :string
+          max_length max
+        end
+      end
     end
   end
 
   def unique_items
     @unique_items = true
+  end
+
+  def nullable
+    @nullable = true
+  end
+
+  def read_only
+    @read_only = true
   end
 
   def items(type = nil, title = nil, ref: nil, &block)
@@ -74,6 +135,14 @@ class Schema
     object name, title, optional: true, **named, &block
   end
 
+  def any(name, title = nil, **named, &block)
+    property name, :any, title, **named, &block
+  end
+
+  def any?(name, title = nil, **named, &block)
+    any name, title, optional: true, **named, &block
+  end
+
   def ref(name, ref, **named)
     property name, ref: ref, **named
   end
@@ -97,7 +166,9 @@ class Schema
   end
 
   def to_spec
-    if @ref
+    if @type == :any
+      {}
+    elsif @ref
       { '$ref': @ref }
     else
       props = {}

@@ -15,11 +15,11 @@ class MediaType
     end
   end
 
-  def schema(schema = :object, ref: nil, &block)
+  def schema(type = :object, title = nil, ref: nil, &block)
     if ref
       @schema = Reference.new ref
     else
-      @schema = Schema.new schema
+      @schema = Schema.new type, title
       @schema.instance_eval(&block) if block
     end
   end

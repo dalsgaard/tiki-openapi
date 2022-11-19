@@ -8,9 +8,9 @@ using Props
 class Components
   hash_props :schemas, :parameters
 
-  def schema(name, type = :object, title = nil, &block)
+  def schema(name, type = :object, title = nil, **named, &block)
     @schemas ||= []
-    schema = Schema.new type, title
+    schema = Schema.new type, title, **named
     schema.instance_eval(&block) if block
     @schemas.push [name, schema]
   end
@@ -24,6 +24,22 @@ class Components
       parameter = Parameter.new name, **named
       parameter.instance_eval(&block) if block
       @parameters.push [name, parameter]
+    end
+  end
+
+  def object(name, title = nil, **named, &block)
+    schema name, :object, title, **named, &block
+  end
+
+  def array(name, items_type = nil, title = nil, ref: nil, **named, &block)
+    if ref
+      schema :array, title do
+        items ref: ref
+      end
+    else
+      schema name, :array, title do
+        items items_type, **named, &block
+      end
     end
   end
 

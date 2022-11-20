@@ -11,8 +11,10 @@ openapi do
       string :foo do
         read_only
       end
+      any :bar
     end
     array :Bass, ref: :Bas
-    any :AnyValue
+    schema :Color, enum: [:red, :green, :blue, nil]
+    hash_map :Hash, ref: :Color
   end
 end

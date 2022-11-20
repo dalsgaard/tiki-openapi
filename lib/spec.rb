@@ -2,6 +2,7 @@ require 'json'
 require_relative './props'
 require_relative './path-item'
 require_relative './components'
+require_relative './server'
 
 using Props
 
@@ -38,7 +39,7 @@ end
 class Info
   props :title, :version, :description, :terms_of_service
   scalar_props :title, :version, :description, :terms_of_service
-  object_props :license
+  object_props :license, :contact
 
   def initialize(title = nil, version = nil, license: nil)
     @title = title
@@ -51,16 +52,24 @@ class Info
     @license.instance_eval(&block) if block
   end
 
+  def contact(name = nil, **named, &block)
+    @contact = Contact.new name, **named
+    @contact.instance_eval(&block) if block
+  end
+
   def to_spec
     props = {}
     scalar_props props
     object_props props
   end
+
+  alias terms terms_of_service
 end
 
 class Spec
   object_props :info, :components
   hash_props :paths
+  array_props :servers
 
   def initialize
     @paths = []
@@ -95,6 +104,18 @@ class Spec
     @components.instance_eval(&block)
   end
 
+  def server(url = nil, description = nil, &block)
+    @servers ||= []
+    server = Server.new url, description
+    server.instance_eval(&block) if block
+    @servers << server
+  end
+
+  def servers(*singles, **pairs)
+    pairs.each_pair { |url, description| server url, description }
+    singles.each { |url| server url }
+  end
+
   def to_spec
     @paths.each do |(url, path_item)|
       path_item.check_parameters url
@@ -102,6 +123,7 @@ class Spec
     props = { openapi: @spec_version }
     object_props props
     hash_props props
+    array_props props
     props
   end
 end

@@ -13,6 +13,8 @@ class ServerVariable
   end
 
   def to_spec
+    @default = @default&.to_s
+    @enum&.map!(&:to_s)
     scalar_props
   end
 end
@@ -22,14 +24,26 @@ class Server
   scalar_props :url, :description
   hash_props :variables
 
-  def initialize(url = nil)
+  def initialize(url = nil, description = nil)
     @url = url
+    @description = description
   end
 
-  def variable(name, default = nil, **named)
+  def variable(name, default = nil, **named, &block)
     @variables ||= []
     variable = ServerVariable.new default, **named
-    @variables.push [name, variable]
+    variable.instance_eval(&block) if block
+    @variables << [name, variable]
+  end
+
+  def variables(**vars)
+    vars.each_pair do |name, value|
+      if value.is_a? Array
+        variable name, value.first, enum: value
+      else
+        variable name, value
+      end
+    end
   end
 
   def to_spec

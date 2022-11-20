@@ -36,3 +36,6 @@ Naming/AccessorMethodName:
 
 Metrics/ParameterLists:
   Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false

@@ -8,7 +8,7 @@ using Props
 class Components
   hash_props :schemas, :parameters
 
-  def schema(name, type = :object, title = nil, **named, &block)
+  def schema(name, type = nil, title = nil, **named, &block)
     @schemas ||= []
     schema = Schema.new type, title, **named
     schema.instance_eval(&block) if block
@@ -39,6 +39,18 @@ class Components
     else
       schema name, :array, title do
         items items_type, **named, &block
+      end
+    end
+  end
+
+  def hash_map(name, items_type = nil, title = nil, ref: nil, **named, &block)
+    if ref
+      schema :object, title do
+        additional_properties ref: ref
+      end
+    else
+      schema name, :object, title do
+        additional_properties items_type, **named, &block
       end
     end
   end

@@ -36,21 +36,28 @@ MARKER_PROPS = %i[
   nullable
   read_only
   write_only
-  additional_properties
 ].freeze
 
 class Schema
   props :title, :description, :ref, :format, NUMBER_PROPS, STRING_PROPS
   marker_props MARKER_PROPS
   named_props :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
-  scalar_props :type, :title, :description, :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
-  object_props :items, :all_of, :one_of, :any_of
+  scalar_props :type, :title, :description, :format, :enum, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
+  object_props :items, :all_of, :one_of, :any_of, :discriminator
   hash_props :properties
+  object_or_scalar_props :additional_properties
 
-  def initialize(type = nil, title = nil, min: nil, max: nil, length: nil, range: nil, **named)
+  def initialize(type = nil, title = nil, enum: nil, additional_properties: nil, min: nil, max: nil, length: nil,
+                 range: nil, **named)
     if type.is_a? String
       @ref = type
     else
+      @type = type
+      additional_properties(additional_properties) if additional_properties
+      if enum
+        @type ||= :string
+        enum(enum)
+      end
       if length.is_a? Range
         @max_length = length.max
         @min_length = length.min
@@ -61,7 +68,6 @@ class Schema
         @exclusive_maximum = range.exclude_end? || nil
       end
       named_props named
-      @type = type
       @title = title
       if min
         case @type
@@ -105,9 +111,11 @@ class Schema
 
   def enum(*items)
     @enum = items.flatten
+    @nullable = true if @enum.include? nil
   end
 
   def property(name, type = :string, _title = nil, optional: false, ref: nil, **named, &block)
+    @type ||= :object
     name_str = name.to_s
     if name_str.end_with? '?'
       optional = true
@@ -124,6 +132,18 @@ class Schema
       schema = Schema.new type, **named
       schema.instance_eval(&block) if block
       @properties << [name_str, schema]
+    end
+  end
+
+  def additional_properties(type = nil, ref: nil, &block)
+    if ref
+      @additional_properties = Reference.new ref
+    elsif type.is_a? Symbol
+      schema = Schema.new type
+      schema.instance_eval(&block) if block
+      @additional_properties = schema
+    else
+      @additional_properties = true
     end
   end
 
@@ -165,6 +185,15 @@ class Schema
     @one_of.instance_eval(&block) if block
   end
 
+  def any_of(*refs, &block)
+    @any_of = SchemaList.new(*refs)
+    @any_of.instance_eval(&block) if block
+  end
+
+  def discriminator(property_name = nil, **mapping, &block)
+    @discriminator = Discriminator.new property_name, **mapping, &block
+  end
+
   def to_spec
     if @type == :any
       {}
@@ -175,6 +204,7 @@ class Schema
       scalar_props props
       object_props props
       hash_props props
+      object_or_scalar_props props
       props[:required] = @required if @required
       props
     end
@@ -229,4 +259,27 @@ class SchemaList
   def to_spec
     @schemas.map(&:to_spec)
   end
+end
+
+class Discriminator
+  props :property_name
+  scalar_props :property_name
+
+  def initialize(property_name = nil, **mapping)
+    @property_name = property_name
+    @mapping = mapping.transform_values { |ref| Reference.new ref }
+  end
+
+  def mapping(**mapping)
+    @mapping.merge! mapping
+  end
+
+  def to_spec
+    props = {}
+    scalar_props props
+    props[:mapping] = @mapping.transform_values(&:ref) unless @mapping.empty?
+    props
+  end
+
+  alias property property_name
 end

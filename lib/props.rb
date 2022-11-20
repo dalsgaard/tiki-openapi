@@ -49,6 +49,19 @@ module Props
       end
     end
 
+    def object_or_scalar_props(*names)
+      define_method :object_or_scalar_props do |props = {}|
+        names.flatten.each do |name|
+          value = instance_variable_get "@#{name}"
+          unless value.nil?
+            value = value.to_spec if value.respond_to? :to_spec
+            props[to_camel(name).to_sym] = value
+          end
+        end
+        props
+      end
+    end
+
     def hash_props(*names)
       define_method :hash_props do |props = {}|
         names.flatten.each do |name|

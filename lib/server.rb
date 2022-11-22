@@ -53,3 +53,17 @@ class Server
     props
   end
 end
+
+module ServerMethods
+  def server(url = nil, description = nil, &block)
+    @servers ||= []
+    server = Server.new url, description
+    server.instance_eval(&block) if block
+    @servers << server
+  end
+
+  def servers(*singles, **pairs)
+    pairs.each_pair { |url, description| server url, description }
+    singles.each { |url| server url }
+  end
+end

@@ -67,6 +67,8 @@ class Info
 end
 
 class Spec
+  include ServerMethods
+
   object_props :info, :components
   hash_props :paths
   array_props :servers
@@ -102,18 +104,6 @@ class Spec
 
     @components ||= Components.new
     @components.instance_eval(&block)
-  end
-
-  def server(url = nil, description = nil, &block)
-    @servers ||= []
-    server = Server.new url, description
-    server.instance_eval(&block) if block
-    @servers << server
-  end
-
-  def servers(*singles, **pairs)
-    pairs.each_pair { |url, description| server url, description }
-    singles.each { |url| server url }
   end
 
   def to_spec

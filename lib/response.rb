@@ -13,7 +13,7 @@ class Response
     if ref
       ref(ref)
     elsif schema
-      schema(schema)
+      schema(ref: schema)
     end
   end
 

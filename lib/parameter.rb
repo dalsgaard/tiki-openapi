@@ -15,7 +15,7 @@ class Parameter
     @schema = Schema.new schema if schema
   end
 
-  def required(required = true) # rubocop:disable Style/OptionalBooleanParameter
+  def required(required = true)
     @required = required || @in == :path
   end
 

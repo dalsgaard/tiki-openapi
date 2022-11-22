@@ -1,13 +1,17 @@
 require_relative './props'
 require_relative './operation'
+require_relative './server'
 
 using Props
 
-VERBS = %i[get put post].freeze
+VERBS = %i[get put post delete options head patch trace].freeze
 
 class PathItem
+  include ServerMethods
+
   props :ref, :summary, :description
   scalar_props :summary, :description
+  array_props :servers
 
   def initialize(parent, summary = nil, ref: nil)
     @parameters = []
@@ -52,6 +56,7 @@ class PathItem
       parameters = @parent.parameters + @parameters
       props[:parameters] = parameters.map(&:to_spec) unless parameters.empty?
       scalar_props props
+      array_props props
       props
     end
   end

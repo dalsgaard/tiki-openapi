@@ -1,5 +1,12 @@
-def default(*urls, **named)
-  puts urls, named
+class Symbol
+  def |(other)
+    puts "#{self} | #{other}"
+  end
+
+  def &(other)
+    puts "#{self} & #{other}"
+  end
 end
 
-default 'baz', 'foo-bar': 'Foo Bar'
+:foo | :bar
+:bar & :baz

@@ -5,11 +5,12 @@ openapi do
     description 'A longer _description_'
 
     get :read_foo do
-      response schema: :Foo
+      response [:Foo | (:Bar & :Baz)] | :string
     end
 
     post :create_foo do
       response 201
+      body! :Foo
     end
 
     put :update_foo do
@@ -25,5 +26,8 @@ openapi do
 
   components do
     object :Foo
+    object :Bar
+    object :Baz
+    schema :Foos, [:Foo] | :Foo
   end
 end

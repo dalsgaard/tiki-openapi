@@ -3,13 +3,13 @@ openapi do
 
   path '/orders' do
     get 'get_orders' do
-      response { ref [:Order] }
+      response [:Order]
       responses 400, 500
     end
 
     path '/{id}' do
       get :get_order do
-        response { ref :Order }
+        response :Order
       end
     end
   end

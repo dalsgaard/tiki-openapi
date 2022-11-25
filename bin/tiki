@@ -1,4 +1,5 @@
-require './lib/tiki'
+#!/usr/bin/env ruby
+require 'tiki'
 
 indir, outdir, ext = ARGV
 outdir ||= indir

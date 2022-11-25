@@ -3,6 +3,7 @@ require_relative './parameter'
 require_relative './response'
 require_relative './reference'
 require_relative './reason'
+require_relative './request-body'
 
 using Props
 
@@ -11,6 +12,7 @@ class Operation
   scalar_props :operation_id, :summary, :description, :deprecated, :tags
   hash_props :responses
   array_props :parameters
+  object_props :request_body
 
   def initialize(operation_id = nil)
     @operation_id = operation_id
@@ -34,28 +36,36 @@ class Operation
     end
   end
 
-  def body(&block); end
+  def request_body(*args, ref: nil, **named, &block)
+    if ref
+      @request_body = Reference.new ref, :request_body
+    else
+      body = RequestBody.new(*args, **named)
+      body.instance_eval(&block) if block
+      @request_body = body
+    end
+  end
 
-  def response(status = nil, description = nil, schema: nil, ref: nil, &block)
+  def request_body!(*args, **named)
+    request_body(*args, required: true, **named)
+  end
+
+  alias request_body? request_body
+  alias body request_body
+  alias body! request_body!
+  alias body? request_body?
+
+  def response(status = nil, schema = nil, description: nil, ref: nil, &block)
     if ref
       @responses.push [status || 200, Reference.new(ref, :response)]
     else
-      if status.is_a? Integer
-        s = status
-        desc = description || reason(status)
-      elsif status.is_a?(String) && description.nil?
-        s = 200
-        desc = status
-      elsif status.nil?
-        s = 200
-        desc = reason(s)
-      else
-        s = status
-        desc = description
+      unless status.is_a?(Integer) || schema
+        schema = status
+        status = 200
       end
-      response = Response.new desc, schema: schema
+      response = Response.new schema, description: description || reason(status)
       response.instance_eval(&block) if block
-      @responses.push [s, response]
+      @responses.push [status, response]
     end
   end
 
@@ -72,6 +82,7 @@ class Operation
     scalar_props props
     array_props props
     hash_props props
+    object_props props
     props
   end
 end

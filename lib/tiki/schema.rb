@@ -1,9 +1,11 @@
 require_relative './props'
 require_relative './reference'
+require_relative './list-helpers'
 
 using Props
 
 PRIMITIVES = %i[string integer number boolean].freeze
+DATA_TYPES = PRIMITIVES + %i[object array]
 
 FORMATS = [
   [:integer, %i[int32 int64]],
@@ -39,7 +41,7 @@ MARKER_PROPS = %i[
 ].freeze
 
 class Schema
-  props :title, :description, :ref, :format, NUMBER_PROPS, STRING_PROPS
+  props :title, :description, :format, NUMBER_PROPS, STRING_PROPS
   marker_props MARKER_PROPS
   named_props :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
   scalar_props :type, :title, :description, :format, :enum, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
@@ -49,42 +51,59 @@ class Schema
 
   def initialize(type = nil, title = nil, enum: nil, additional_properties: nil, min: nil, max: nil, length: nil,
                  range: nil, **named)
-    if type.is_a? String
-      @ref = type
-    else
+    case type
+    when *PRIMITIVES, :object, :array
       @type = type
-      additional_properties(additional_properties) if additional_properties
-      if enum
-        @type ||= :string
-        enum(enum)
-      end
-      if length.is_a? Range
-        @max_length = length.max
-        @min_length = length.min
-      end
-      if range.is_a? Range
-        @maximum = range.max + (range.exclude_end? ? 1 : 0)
-        @minimum = range.min
-        @exclusive_maximum = range.exclude_end? || nil
-      end
-      named_props named
-      @title = title
-      if min
-        case @type
-        when :number, :integer
-          minimum min
-        when :string
-          min_length min
-        end
-      end
-      if max
-        case @type
-        when :number, :integer
-          maximum max
-        when :string
-          max_length max
-        end
-      end
+    when String, Symbol
+      @ref = create_reference type
+    when Array
+      @type = :array
+      items type.first
+    when OrList
+      one_of(*type.list)
+    when AndList
+      all_of(*type.list)
+    end
+    additional_properties(additional_properties) if additional_properties
+    enum(enum) if enum
+    length(length) if length.is_a? Range
+    range(range) if range.is_a? Range
+    named_props named
+    @title = title
+    min(min) if min
+    max(max) if max
+  end
+
+  def length(length)
+    return unless length.is_a? Range
+
+    @max_length = length.max
+    @min_length = length.min
+  end
+
+  def range(range)
+    return unless range.is_a? Range
+
+    @maximum = range.max + (range.exclude_end? ? 1 : 0)
+    @minimum = range.min
+    @exclusive_maximum = range.exclude_end? || nil
+  end
+
+  def min(min)
+    case @type
+    when :number, :integer
+      minimum min
+    when :string
+      min_length min
+    end
+  end
+
+  def max(max)
+    case @type
+    when :number, :integer
+      maximum max
+    when :string
+      max_length max
     end
   end
 
@@ -100,16 +119,13 @@ class Schema
     @read_only = true
   end
 
-  def items(type = nil, title = nil, ref: nil, &block)
-    if ref
-      @items = Reference.new ref
-    else
-      @items = Schema.new type, title
-      instance_eval(&block) if block
-    end
+  def items(type = nil, title = nil, &block)
+    @items = Schema.new type, title
+    instance_eval(&block) if block
   end
 
   def enum(*items)
+    @type ||= :string
     @enum = items.flatten
     @nullable = true if @enum.include? nil
   end
@@ -238,8 +254,8 @@ class Schema
 end
 
 class SchemaList
-  def initialize(*refs)
-    @schemas = refs.flatten.map { |ref| Reference.new(ref) }
+  def initialize(*types)
+    @schemas = types.map { |type| Schema.new(type) }
   end
 
   def schema(type: :object, ref: nil, **named, &block)

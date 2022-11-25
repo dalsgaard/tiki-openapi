@@ -1,12 +1,10 @@
-class Symbol
-  def |(other)
-    puts "#{self} | #{other}"
-  end
+require 'optimist'
 
-  def &(other)
-    puts "#{self} & #{other}"
-  end
+opts = Optimist.options do
+  opt :corn, 'We have corn'
+  opt :cheese, 'Name of the cheese', type: :string
+  opt :chickens, 'Number of chickens', default: 4
 end
 
-:foo | :bar
-:bar & :baz
+puts opts
+puts ARGV

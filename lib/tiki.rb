@@ -1,10 +1,23 @@
+require 'optimist'
 require_relative './tiki/spec'
 require_relative './tiki/list-helpers'
 
 using ListHelpers
 
-def tiki(indir, outdir, ext)
-  Dir.glob File.join(indir, "*.#{ext}") do |infile|
+def tiki
+  opts = Optimist.options do
+    opt :indir, 'Input directory', default: 'specs'
+    opt :outdir, 'Output directory', type: :string
+    opt :ext, 'Extension of the input files', default: 'oas.rb'
+  end
+
+  indir = opts[:indir]
+  outdir = opts[:outdir] || indir
+  ext = opts[:ext]
+
+  infiles = Dir.glob File.join(indir, "*.#{ext}")
+  puts "Found #{infiles.size} input #{infiles.size == 1 ? 'file' : 'files'}"
+  infiles.each do |infile|
     outfile = File.join outdir, "#{File.basename(infile, '.rb')}.json"
     puts "#{infile} -> #{outfile}"
     spec = Spec.new

@@ -1,8 +1,4 @@
 #!/usr/bin/env ruby
 require 'tiki'
 
-indir, outdir, ext = ARGV
-outdir ||= indir
-ext ||= 'oas.rb'
-
-tiki indir, outdir, ext
+tiki

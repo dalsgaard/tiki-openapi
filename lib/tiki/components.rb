@@ -2,11 +2,12 @@ require_relative './props'
 require_relative './schema'
 require_relative './reference'
 require_relative './parameter'
+require_relative './security'
 
 using Props
 
 class Components
-  hash_props :schemas, :parameters
+  hash_props :schemas, :parameters, :security_schemes
 
   # Schema
   def schema(name, type = nil, title = nil, **named, &block)
@@ -68,6 +69,14 @@ class Components
       parameter.instance_eval(&block) if block
       @parameters << [name, parameter]
     end
+  end
+
+  # Security Schemes
+  def security_scheme(name, *args, **named, &block)
+    @security_schemes ||= []
+    scheme = SecurityScheme.new(*args, **named)
+    scheme.instance_eval(&block) if block
+    @security_schemes << [name, scheme]
   end
 
   def to_spec

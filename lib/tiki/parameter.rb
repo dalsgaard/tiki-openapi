@@ -29,6 +29,10 @@ class Parameter
     @required = true
   end
 
+  def in(_in)
+    @in = _in
+  end
+
   INS.each do |_in|
     define_method _in do
       @in = _in

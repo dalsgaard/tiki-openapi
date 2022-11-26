@@ -24,4 +24,6 @@ class Response
     hash_props props
     props
   end
+
+  alias desc description
 end

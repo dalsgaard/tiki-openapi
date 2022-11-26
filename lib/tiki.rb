@@ -6,7 +6,7 @@ using ListHelpers
 
 def tiki
   opts = Optimist.options do
-    opt :indir, 'Input directory', default: 'specs'
+    opt :indir, 'Input directory', default: '.'
     opt :outdir, 'Output directory', type: :string
     opt :ext, 'Extension of the input files', default: 'oas.rb'
   end

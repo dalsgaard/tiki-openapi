@@ -85,4 +85,6 @@ class Operation
     object_props props
     props
   end
+
+  alias desc description
 end

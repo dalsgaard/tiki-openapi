@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
     reference.rb
     schema.rb
     spec.rb
+    info.rb
+    security.rb
     list-helpers.rb
     path-item.rb
     request-body.rb

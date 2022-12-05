@@ -21,9 +21,9 @@ class PathItem
   end
 
   VERBS.each do |verb|
-    define_method verb do |operation_id = nil, &block|
+    define_method verb do |*args, **named, &block|
       @operations ||= []
-      operation = Operation.new operation_id
+      operation = Operation.new(*args, **named)
       operation.instance_eval(&block) if block
       @operations.push [verb, operation]
     end
@@ -39,6 +39,10 @@ class PathItem
       parameter.instance_eval(&block) if block
       @parameters.push parameter
     end
+  end
+
+  def parameter!(*args, **named, &block)
+    parameter(*args, required: true, **named, &block)
   end
 
   def path(url, summary = nil, **named, &block)
@@ -65,7 +69,9 @@ class PathItem
     parameters = @parent.parameters + @parameters
     params = path.scan(/\{([a-zA-Z0-9_]+)\}/).map(&:first)
     params.each do |param|
-      @parameters << Parameter.new(param, in: :path) unless parameters.find { |p| p.get_name == param }
+      unless parameters.find { |p| p.get_name == param } || @operations.find { |o| o.last.check_parameter(param) }
+        @parameters << Parameter.new(param, in: :path)
+      end
     end
   end
 end

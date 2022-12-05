@@ -6,14 +6,17 @@ using Props
 class RequestBody
   include Content
   props :description, :required
+  named_props :mime, :description, :required
   scalar_props :description
   hash_props :content
 
-  def initialize(type = nil, mime = nil, description: nil, required: false)
-    @description = description
-    @required = required
-    content mime do
-      schema(type) if type
+  def initialize(type = nil, _mime = nil, **named)
+    @mime = _mime
+    named_props named
+    return unless type
+
+    content @mime do
+      schema(type)
     end
   end
 

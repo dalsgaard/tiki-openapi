@@ -41,9 +41,9 @@ MARKER_PROPS = %i[
 ].freeze
 
 class Schema
-  props :title, :description, :format, NUMBER_PROPS, STRING_PROPS
+  props :title, %i[description desc], :format, NUMBER_PROPS, STRING_PROPS
   marker_props MARKER_PROPS
-  named_props :format, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
+  named_props :format, %i[description desc], MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
   scalar_props :type, :title, :description, :format, :enum, MARKER_PROPS, NUMBER_PROPS, STRING_PROPS, OBJECT_PROPS
   object_props :items, :all_of, :one_of, :any_of, :discriminator
   hash_props :properties

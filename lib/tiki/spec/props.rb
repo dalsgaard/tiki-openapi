@@ -2,26 +2,46 @@ module Props
   refine Class do
     def props(*names)
       names.flatten.each do |name|
-        define_method name do |value|
-          instance_variable_set("@#{name}", value)
+        if name.is_a? Array
+          n = name.first
+          define_method n do |value|
+            instance_variable_set("@#{n}", value)
+          end
+          name[1..].each do |a|
+            alias_method a, n
+          end
+        else
+          define_method name do |value|
+            instance_variable_set("@#{name}", value)
+          end
         end
       end
     end
 
     def marker_props(*names)
       names.flatten.each do |name|
-        define_method name do
-          instance_variable_set("@#{name}", true)
+        define_method name do |value = true|
+          instance_variable_set("@#{name}", value)
         end
       end
     end
 
     def named_props(*names)
+      var_names = {}
+      names.each do |name|
+        if name.is_a? Array
+          v = "@#{name.first}"
+          name.each { |n| var_names[n] = v }
+        else
+          var_names[name] = "@#{name}"
+        end
+      end
       define_method :named_props do |named|
         names = names.flatten
         named.each_pair do |name, value|
-          if names.include? name
-            instance_variable_set "@#{name}", value unless value.nil?
+          var_name = var_names[name]
+          if var_name && !value.nil?
+            instance_variable_set var_name, value
           else
             puts "Unknown named argument #{name}"
           end

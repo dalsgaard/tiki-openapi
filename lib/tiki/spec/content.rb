@@ -1,9 +1,9 @@
 require_relative './media-type'
 
 module Content
-  def content(mime = nil, **named, &block)
+  def content(mime = nil, *args, **named, &block)
     @content ||= []
-    media_type = MediaType.new(**named)
+    media_type = MediaType.new(*args, **named)
     media_type.instance_eval(&block) if block
     @content.push [resolve_mime_type(mime), media_type]
     media_type
@@ -28,7 +28,11 @@ end
 
 MIME_TYPES = {
   json: 'application/json',
-  xml: 'application/xml'
+  xml: 'application/xml',
+  html: 'text/html',
+  form: 'application/x-www-form-urlencoded',
+  form_data: 'multipart/form-data',
+  all: '*/*'
 }
 
 def resolve_mime_type(mime)

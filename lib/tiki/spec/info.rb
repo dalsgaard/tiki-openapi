@@ -32,7 +32,7 @@ class Contact
 end
 
 class Info
-  props :title, :version, :description, :terms_of_service
+  props :title, :version, %i[description desc], %i[terms_of_service terms]
   scalar_props :title, :version, :description, :terms_of_service
   object_props :license, :contact
 
@@ -57,7 +57,4 @@ class Info
     scalar_props props
     object_props props
   end
-
-  alias terms terms_of_service
-  alias desc description
 end

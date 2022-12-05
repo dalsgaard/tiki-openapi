@@ -11,8 +11,8 @@ class Response
   scalar_props :description
   hash_props :content
 
-  def initialize(type = nil, mime = nil, description: nil)
-    @description = description
+  def initialize(type = nil, mime = nil, description: nil, desc: nil)
+    @description = description || desc
     content mime do
       schema(type) if type
     end

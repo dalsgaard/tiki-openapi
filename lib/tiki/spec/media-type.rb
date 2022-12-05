@@ -7,11 +7,11 @@ using Props
 class MediaType
   props :ref
 
-  def initialize(schema: :object, ref: nil)
+  def initialize(_schema = nil, schema: nil, ref: nil)
     if ref
       @schema = Reference.new ref
     elsif schema
-      @schema = Schema.new schema
+      @schema = Schema.new schema || _schema || :object
     end
   end
 

@@ -1,5 +1,6 @@
 require 'optimist'
 require_relative './tiki-spec'
+require_relative './tiki-serve'
 
 SUB_COMMANDS = %w[spec serve].freeze
 
@@ -14,7 +15,7 @@ def tiki
   when 'spec'
     tiki_spec
   when 'serve'
-    puts 'Serve'
+    tiki_serve
   else
     puts "Unknown sub-command '#{cmd}'"
   end

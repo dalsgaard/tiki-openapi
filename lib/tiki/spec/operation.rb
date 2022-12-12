@@ -106,6 +106,6 @@ class Operation
   end
 
   def check_parameter(name)
-    @parameters.find { |p| p.get_name == name }
+    @parameters&.find { |p| p.get_name == name }
   end
 end

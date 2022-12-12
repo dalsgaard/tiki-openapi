@@ -40,3 +40,6 @@ Metrics/ParameterLists:
 
 Style/OptionalBooleanParameter:
   Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false

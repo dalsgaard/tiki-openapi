@@ -11,11 +11,18 @@ class Response
   scalar_props :description
   hash_props :content
 
-  def initialize(type = nil, mime = nil, description: nil, desc: nil)
+  def initialize(type = nil, mime = nil, description: nil, desc: nil, example: nil)
     @description = description || desc
-    content mime do
-      schema(type) if type
+    if mime || type
+      @default_content = content mime, example: example do
+        schema(type) if type
+      end
     end
+  end
+
+  def example(*args, **named)
+    @default_content ||= content
+    @default_content.example(*args, **named)
   end
 
   def to_spec

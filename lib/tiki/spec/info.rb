@@ -36,9 +36,9 @@ class Info
   scalar_props :title, :version, :description, :terms_of_service
   object_props :license, :contact
 
-  def initialize(title = nil, version = nil, license: nil)
-    @title = title
-    @version = version
+  def initialize(_title = nil, _version = nil, title: nil, version: nil, license: nil)
+    @title = title || _title
+    @version = version || _version || '1.0.0'
     @license = License.new license if license
   end
 

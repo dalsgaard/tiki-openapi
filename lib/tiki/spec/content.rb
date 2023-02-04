@@ -9,9 +9,14 @@ module Content
     media_type
   end
 
-  def schema(type = nil, title = nil, **named, &block)
-    content do
-      schema type, title, **named, &block
+  def schema(type = nil, title = nil, example: nil, **named, &block)
+    if @default_content
+      @default_content.schema type, title, **named, &block
+      @default_content.example example if example
+    else
+      @default_content = content example: example do
+        schema type, title, **named, &block
+      end
     end
   end
 
@@ -33,7 +38,7 @@ MIME_TYPES = {
   form: 'application/x-www-form-urlencoded',
   form_data: 'multipart/form-data',
   all: '*/*'
-}
+}.freeze
 
 def resolve_mime_type(mime)
   MIME_TYPES[mime] || mime || 'application/json'

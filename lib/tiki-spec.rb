@@ -1,3 +1,4 @@
+require 'json'
 require 'optimist'
 require_relative './tiki/spec/spec'
 require_relative './tiki/spec/list-helpers'

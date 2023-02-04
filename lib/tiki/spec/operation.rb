@@ -16,10 +16,12 @@ class Operation
   array_props :parameters
   object_props :request_body, :external_docs
 
-  def initialize(operation_id = nil, **named)
+  def initialize(operation_id = nil, _schema = nil, schema: nil, example: nil, **named)
     @operation_id = operation_id
     named_props named
     @responses = []
+    schema ||= _schema
+    response schema, example: example if schema
   end
 
   def tags(*tags)
@@ -73,7 +75,7 @@ class Operation
   alias body! request_body!
   alias body? request_body?
 
-  def response(status = nil, schema = nil, description: nil, desc: nil, mime: nil, ref: nil, &block)
+  def response(status = nil, schema = nil, description: nil, desc: nil, mime: nil, ref: nil, example: nil, &block)
     if ref
       @responses.push [status || 200, Reference.new(ref, :response)]
     else
@@ -81,7 +83,7 @@ class Operation
         schema = status
         status = 200
       end
-      response = Response.new schema, mime, description: description || desc || reason(status)
+      response = Response.new schema, mime, description: description || desc || reason(status), example: example
       response.instance_eval(&block) if block
       @responses.push [status, response]
     end

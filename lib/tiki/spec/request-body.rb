@@ -13,11 +13,16 @@ class RequestBody
   def initialize(type = nil, _mime = nil, **named)
     @mime = _mime
     named_props named
-    return unless type
-
-    content @mime do
-      schema(type)
+    if @mime || type
+      @default_content = content @mime do
+        schema(type) if type
+      end
     end
+  end
+
+  def example(*args, **named)
+    @default_content ||= content
+    @default_content.example(*args, **named)
   end
 
   def to_spec

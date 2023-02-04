@@ -8,4 +8,7 @@ gem 'puma'
 
 group :development do
   gem 'rspec'
+  gem 'tiki'
 end
+
+gem "ruby-lsp", "~> 0.3.7", :group => :development

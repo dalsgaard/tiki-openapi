@@ -1,15 +1,15 @@
-require 'json'
-require_relative './props'
-require_relative './path-item'
-require_relative './components'
-require_relative './server'
-require_relative './info'
+require_relative "./props"
+require_relative "./path-item"
+require_relative "./components"
+require_relative "./server"
+require_relative "./info"
 
 using Props
 
 class Spec
   include ServerMethods
 
+  props %i[spec_version version]
   object_props :info, :components
   hash_props :paths
   array_props :servers
@@ -18,39 +18,45 @@ class Spec
     @paths = []
   end
 
-  def version(spec_version)
+  def openapi(
+    _title = nil,
+    _version = nil,
+    title: nil,
+    version: nil,
+    spec_version: "3.0.3",
+    &block
+  )
     @spec_version = spec_version
+    info _title, _version, title: title, version: version if title || _title
+    instance_eval(&block) if block
   end
 
-  def openapi(spec_version = '3.0.3', &block)
-    @spec_version = spec_version
-    instance_eval(&block)
-  end
-
-  def info(title = nil, version = nil, &block)
-    @info = Info.new title, version
+  def info(*args, **named, &block)
+    @info = Info.new(*args, **named)
     @info.instance_eval(&block) if block
   end
 
-  def path(url, summary = nil, **named, &block)
+  def path(url, *args, **named, &block)
     root = PathItemRoot.new @paths
     parent = root.child url
-    path = PathItem.new parent, summary, **named
+    path = PathItem.new parent, *args, **named
     path.instance_eval(&block) if block
     parent.add path
   end
 
   def components(&block)
-    return unless block
-
     @components ||= Components.new
-    @components.instance_eval(&block)
+    @components.instance_eval(&block) if block
+  end
+
+  %i[schema object array hash_map response parameter].each do |method|
+    define_method method do |*args, **named, &block|
+      components { send(method, *args, **named, &block) }
+    end
   end
 
   def to_spec
-    @paths.each do |(url, path_item)|
-      path_item.check_parameters url
-    end
+    @paths.each { |(url, path_item)| path_item.check_parameters url }
     props = { openapi: @spec_version }
     object_props props
     hash_props props

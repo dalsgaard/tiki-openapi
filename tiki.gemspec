@@ -1,6 +1,7 @@
 SPEC_FILES = %w[
   components.rb
   content.rb
+  example.rb
   external-documentation.rb
   info.rb
   list-helpers.rb
@@ -32,9 +33,13 @@ CLIENT_FILES = %w[
   client.rb
 ].map { |fn| "lib/tiki/client/#{fn}" }
 
+TYPES_FILES = %w[
+  typescript/client/create.rb
+].map { |fn| "lib/tiki/types/#{fn}" }
+
 Gem::Specification.new do |s|
   s.name        = 'tiki'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.summary     = 'Tiki'
   s.description = 'A tool for creating and using OpenAPI specs'
   s.authors     = ['Kim Dalsgaard']
@@ -42,12 +47,14 @@ Gem::Specification.new do |s|
   s.files       =  SPEC_FILES +
                    SERVE_FILES +
                    SOM_FILES +
-                   ['Gemfile', 'bin/tiki', 'lib/tiki.rb', 'lib/tiki-spec.rb', 'lib/tiki-serve.rb', 'lib/tiki/client.rb']
+                   CLIENT_FILES +
+                   ['Gemfile', 'bin/tiki', 'lib/tiki.rb', 'lib/tiki-spec.rb', 'lib/tiki-serve.rb',
+                    'lib/tiki/client.rb', 'lib/tiki-types.rb']
   s.homepage =
     'https://rubygems.org/gems/tiki'
   s.license = 'MIT'
   s.metadata['rubygems_mfa_required'] = 'true'
-  s.required_ruby_version = '>= 2.6.0'
+  s.required_ruby_version = '>= 3.0'
   s.add_runtime_dependency 'addressable'
   s.add_runtime_dependency 'excon'
   s.add_runtime_dependency 'hanami-router'

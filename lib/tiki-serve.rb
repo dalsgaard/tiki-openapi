@@ -7,10 +7,6 @@ require_relative './tiki/som/som'
 require_relative './tiki/serve/create-app'
 
 module Operations
-  instance_eval File.read('./demos/minimal/get-hello.rb')
-end
-
-module Operations
 end
 
 def tiki_serve

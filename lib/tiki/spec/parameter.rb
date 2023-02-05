@@ -15,9 +15,14 @@ class Parameter
   scalar_props :name, :in, :description, :required, :deprecated, :allow_empty_value, :style, :explode
   object_props :schema
 
-  def initialize(name, schema: :string, **named)
+  def initialize(name, _schema = nil, schema: nil, **named)
+    s = schema || _schema || :string
+    @schema = Schema.new s if s
+    if name.end_with? '!'
+      @required = true
+      name = name[0..-2]
+    end
     @name = name
-    @schema = Schema.new schema if schema
     named_props named
   end
 

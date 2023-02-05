@@ -29,13 +29,13 @@ class PathItem
     end
   end
 
-  def parameter(name = nil, ref: nil, **named, &block)
+  def parameter(name = nil, schema = nil, ref: nil, **named, &block)
     if ref
       reference = Reference.new ref
       @parameters.push reference
     else
       named[:in] ||= :path
-      parameter = Parameter.new name, **named
+      parameter = Parameter.new name, schema, **named
       parameter.instance_eval(&block) if block
       @parameters.push parameter
     end
@@ -43,6 +43,11 @@ class PathItem
 
   def parameter!(*args, **named, &block)
     parameter(*args, required: true, **named, &block)
+  end
+
+  def parameters(*args, **named)
+    args.each { |name| parameter name }
+    named.each_pair { |name, schema| parameter name, schema }
   end
 
   def path(url, summary = nil, **named, &block)

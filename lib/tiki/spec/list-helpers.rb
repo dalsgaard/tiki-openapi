@@ -7,6 +7,10 @@ module ListHelpers
     def &(other)
       AndList.new self, other
     end
+
+    def <(other)
+      LessList.new self, other
+    end
   end
 
   refine String do
@@ -53,5 +57,13 @@ class AndList
   def &(other)
     @list << other
     self
+  end
+end
+
+class LessList
+  attr_reader :list
+
+  def initialize(*args)
+    @list = args
   end
 end

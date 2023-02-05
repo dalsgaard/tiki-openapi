@@ -11,8 +11,12 @@ class Components
 
   # Schema
   def schema(name, type = nil, title = nil, **named, &block)
+    if name.is_a? LessList
+      name, super_class = name.list
+    end
     @schemas ||= []
     schema = Schema.new type, title, **named
+    schema.all_of super_class if super_class
     schema.instance_eval(&block) if block
     @schemas.push [name, schema]
   end
@@ -59,13 +63,13 @@ class Components
   end
 
   # Parameter
-  def parameter(name = nil, ref: nil, **named, &block)
+  def parameter(name = nil, schema = nil, ref: nil, **named, &block)
     @parameters ||= []
     if ref
       reference = Reference.new ref
       @parameters << [name, reference]
     else
-      parameter = Parameter.new name, **named
+      parameter = Parameter.new name, schema, **named
       parameter.instance_eval(&block) if block
       @parameters << [name, parameter]
     end

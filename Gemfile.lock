@@ -10,7 +10,6 @@ GEM
       mustermann-contrib (~> 3.0)
       rack (~> 2.0)
     hansi (0.2.1)
-    language_server-protocol (3.17.0.2)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mustermann-contrib (3.0.0)
@@ -18,7 +17,6 @@ GEM
       mustermann (= 3.0.0)
     nio4r (2.5.8)
     optimist (3.0.1)
-    prettier_print (1.2.0)
     public_suffix (5.0.1)
     puma (6.0.2)
       nio4r (~> 2.0)
@@ -36,14 +34,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.0)
-    ruby-lsp (0.3.7)
-      language_server-protocol (~> 3.17.0)
-      sorbet-runtime
-      syntax_tree (>= 4.0.2, < 5.0.0)
     ruby2_keywords (0.0.5)
-    sorbet-runtime (0.5.10626)
-    syntax_tree (4.3.0)
-      prettier_print (>= 1.0.2)
     tiki (0.0.1)
       optimist
 
@@ -57,7 +48,6 @@ DEPENDENCIES
   optimist
   puma
   rspec
-  ruby-lsp (~> 0.3.7)
   tiki
 
 BUNDLED WITH
